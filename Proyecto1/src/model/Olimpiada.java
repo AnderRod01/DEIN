@@ -20,6 +20,11 @@ public class Olimpiada {
 	public Olimpiada() {
 		super();
 	}
+	@Override
+	public String toString() {
+		
+		return nombre+ ", " + ciudad;
+	}
 	
 	
 }

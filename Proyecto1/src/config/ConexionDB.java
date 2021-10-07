@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.TimeZone;
 
+
+
 public class ConexionDB {
     private static Connection conexion;
     
@@ -26,5 +28,10 @@ public class ConexionDB {
     	}
         return conexion;
     }
+    
+    public static void main(String[] args) {
+		ConexionDB gbd=new ConexionDB();
+		gbd.getConexion();
+	}
 
 }

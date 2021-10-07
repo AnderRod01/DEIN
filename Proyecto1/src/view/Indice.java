@@ -15,6 +15,7 @@ import java.awt.Insets;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JList;
 import java.awt.FlowLayout;
@@ -29,8 +30,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import dao.OlimpiadaDAO;
+import model.Olimpiada;
+
 import javax.swing.JRadioButton;
-import javax.swing.border.MatteBorder;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 
 public class Indice extends JFrame {
 
@@ -58,7 +64,7 @@ public class Indice extends JFrame {
 	 */
 	public Indice() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 692, 492);
+		setBounds(100, 100, 750, 492);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -69,11 +75,8 @@ public class Indice extends JFrame {
 		JMenuItem mntmAniadir_deportista = new JMenuItem("Añadir");
 		mnDeportista.add(mntmAniadir_deportista);
 		
-		JMenuItem mntmBorrar_deportista = new JMenuItem("Borrar");
-		mnDeportista.add(mntmBorrar_deportista);
-		
-		JMenuItem mntmEditar_deportista = new JMenuItem("Editar");
-		mnDeportista.add(mntmEditar_deportista);
+		JMenuItem mntmGestionar_deportista = new JMenuItem("Gestionar");
+		mnDeportista.add(mntmGestionar_deportista);
 		
 		JMenu mnDeporte = new JMenu("Deportes");
 		menuBar.add(mnDeporte);
@@ -81,11 +84,8 @@ public class Indice extends JFrame {
 		JMenuItem mntmAniadir_deporte = new JMenuItem("Añadir");
 		mnDeporte.add(mntmAniadir_deporte);
 		
-		JMenuItem mntmBorrar_deporte = new JMenuItem("Borrar");
-		mnDeporte.add(mntmBorrar_deporte);
-		
-		JMenuItem mntmEditar_deporte = new JMenuItem("Editar");
-		mnDeporte.add(mntmEditar_deporte);
+		JMenuItem mntmGestionar_Deporte = new JMenuItem("Gestionar");
+		mnDeporte.add(mntmGestionar_Deporte);
 		
 		JMenu mnEquipo = new JMenu("Equipos");
 		menuBar.add(mnEquipo);
@@ -93,18 +93,15 @@ public class Indice extends JFrame {
 		JMenuItem mntmAniadir_equipo = new JMenuItem("Añadir");
 		mnEquipo.add(mntmAniadir_equipo);
 		
-		JMenuItem mntmBorrar_equipo = new JMenuItem("Borrar");
-		mnEquipo.add(mntmBorrar_equipo);
-		
-		JMenuItem mntmEditar_equipo = new JMenuItem("Editar");
-		mnEquipo.add(mntmEditar_equipo);
+		JMenuItem mntmGestionar_equipo = new JMenuItem("Gesionar");
+		mnEquipo.add(mntmGestionar_equipo);
 		contentPane = new JPanel();
 		contentPane.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0};
 		gbl_contentPane.rowHeights = new int[]{94, 102, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWeights = new double[]{0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
@@ -132,7 +129,13 @@ public class Indice extends JFrame {
 		gbc_lblOlimpiadas.gridy = 1;
 		panel_olimpiadas.add(lblOlimpiadas, gbc_lblOlimpiadas);
 		
+	
+		
+		
 		JComboBox comboBox_Olimpiadas = new JComboBox();
+		cargarComboOlimpiadas(comboBox_Olimpiadas);
+		
+		comboBox_Olimpiadas.setSelectedIndex(0);
 		GridBagConstraints gbc_comboBox_Olimpiadas = new GridBagConstraints();
 		gbc_comboBox_Olimpiadas.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBox_Olimpiadas.fill = GridBagConstraints.HORIZONTAL;
@@ -141,6 +144,15 @@ public class Indice extends JFrame {
 		panel_olimpiadas.add(comboBox_Olimpiadas, gbc_comboBox_Olimpiadas);
 		
 		JButton btnAniadirOlimpiada = new JButton("");
+		btnAniadirOlimpiada.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				NuevaOlimpiada frame = new NuevaOlimpiada();
+				frame.setVisible(true);
+				
+			}
+		});
+		btnAniadirOlimpiada.setIcon(new ImageIcon(Indice.class.getResource("/images/new.png")));
 		GridBagConstraints gbc_btnAniadirOlimpiada = new GridBagConstraints();
 		gbc_btnAniadirOlimpiada.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAniadirOlimpiada.gridx = 2;
@@ -148,6 +160,7 @@ public class Indice extends JFrame {
 		panel_olimpiadas.add(btnAniadirOlimpiada, gbc_btnAniadirOlimpiada);
 		
 		JButton btnEditarOlimpiada = new JButton("");
+		btnEditarOlimpiada.setIcon(new ImageIcon(Indice.class.getResource("/images/edit.png")));
 		GridBagConstraints gbc_btnEditarOlimpiada = new GridBagConstraints();
 		gbc_btnEditarOlimpiada.insets = new Insets(0, 0, 5, 5);
 		gbc_btnEditarOlimpiada.gridx = 3;
@@ -155,6 +168,7 @@ public class Indice extends JFrame {
 		panel_olimpiadas.add(btnEditarOlimpiada, gbc_btnEditarOlimpiada);
 		
 		JButton btnBorrarOlimpiada = new JButton("");
+		btnBorrarOlimpiada.setIcon(new ImageIcon(Indice.class.getResource("/images/trash.png")));
 		GridBagConstraints gbc_btnBorrarOlimpiada = new GridBagConstraints();
 		gbc_btnBorrarOlimpiada.insets = new Insets(0, 0, 5, 5);
 		gbc_btnBorrarOlimpiada.gridx = 4;
@@ -162,6 +176,7 @@ public class Indice extends JFrame {
 		panel_olimpiadas.add(btnBorrarOlimpiada, gbc_btnBorrarOlimpiada);
 		
 		JButton btnVerOlimpiada = new JButton("");
+		btnVerOlimpiada.setIcon(new ImageIcon(Indice.class.getResource("/images/see.png")));
 		btnVerOlimpiada.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -183,10 +198,34 @@ public class Indice extends JFrame {
 		ButtonGroup bg = new ButtonGroup();
 		
 		JRadioButton rdbtnSummer = new JRadioButton("Verano");
+		rdbtnSummer.setSelected(true);
+		rdbtnSummer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				OlimpiadaDAO olimpDao= new OlimpiadaDAO();
+				ArrayList <Olimpiada> lstOlimp= olimpDao.getOlimpiadasVerano();
+				DefaultComboBoxModel<Olimpiada> mdlOlimp= new DefaultComboBoxModel<Olimpiada>();
+				mdlOlimp.addAll(lstOlimp);
+				comboBox_Olimpiadas.setModel(mdlOlimp);
+				//comboBox_Olimpiadas.setSelectedIndex(0);
+				
+			}
+		});
 		panel_rdbtn_olimpiadas.add(rdbtnSummer);
 		bg.add(rdbtnSummer);
 		
 		JRadioButton rdbtnWinter = new JRadioButton("Invierno");
+		rdbtnWinter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				OlimpiadaDAO olimpDao= new OlimpiadaDAO();
+				ArrayList <Olimpiada> lstOlimp= olimpDao.getOlimpiadasInvierno();
+				DefaultComboBoxModel<Olimpiada> mdlOlimp= new DefaultComboBoxModel<Olimpiada>();
+				mdlOlimp.addAll(lstOlimp);
+				comboBox_Olimpiadas.setModel(mdlOlimp);
+				//comboBox_Olimpiadas.setSelectedIndex(0);
+			}
+		});
 		panel_rdbtn_olimpiadas.add(rdbtnWinter);
 		bg.add(rdbtnWinter);
 		
@@ -215,7 +254,7 @@ public class Indice extends JFrame {
 		
 		JList list_Evento = new JList();
 		scrollPane_Evento.setViewportView(list_Evento);
-		list_Evento.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)), "EVENTOS", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 92, 92)));
+		list_Evento.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "EVENTOS", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 92, 92)));
 		
 		JPanel panel_btn_Evento = new JPanel();
 		GridBagConstraints gbc_panel_btn_Evento = new GridBagConstraints();
@@ -231,6 +270,7 @@ public class Indice extends JFrame {
 		panel_btn_Evento.setLayout(gbl_panel_btn_Evento);
 		
 		JButton btnAniadirEvento = new JButton("");
+		btnAniadirEvento.setIcon(new ImageIcon(Indice.class.getResource("/images/new.png")));
 		GridBagConstraints gbc_btnAniadirEvento = new GridBagConstraints();
 		gbc_btnAniadirEvento.insets = new Insets(0, 0, 5, 0);
 		gbc_btnAniadirEvento.gridx = 0;
@@ -238,6 +278,7 @@ public class Indice extends JFrame {
 		panel_btn_Evento.add(btnAniadirEvento, gbc_btnAniadirEvento);
 		
 		JButton btnEditarEvento = new JButton("");
+		btnEditarEvento.setIcon(new ImageIcon(Indice.class.getResource("/images/edit.png")));
 		GridBagConstraints gbc_btnEditarEvento = new GridBagConstraints();
 		gbc_btnEditarEvento.insets = new Insets(0, 0, 5, 0);
 		gbc_btnEditarEvento.gridx = 0;
@@ -245,6 +286,7 @@ public class Indice extends JFrame {
 		panel_btn_Evento.add(btnEditarEvento, gbc_btnEditarEvento);
 		
 		JButton btnBorrarEvento = new JButton("");
+		btnBorrarEvento.setIcon(new ImageIcon(Indice.class.getResource("/images/trash.png")));
 		GridBagConstraints gbc_btnBorrarEvento = new GridBagConstraints();
 		gbc_btnBorrarEvento.gridx = 0;
 		gbc_btnBorrarEvento.gridy = 2;
@@ -295,6 +337,14 @@ public class Indice extends JFrame {
 		
 		JButton btnNewButton_2 = new JButton("New button");
 		panel.add(btnNewButton_2);
+	}
+	
+	private static void cargarComboOlimpiadas(JComboBox<Olimpiada> comboBox_Olimpiadas ) {
+		OlimpiadaDAO olimpDao= new OlimpiadaDAO();
+		ArrayList <Olimpiada> lstOlimp= olimpDao.getOlimpiadas();
+		DefaultComboBoxModel<Olimpiada> mdlOlimp= new DefaultComboBoxModel<Olimpiada>();
+		mdlOlimp.addAll(lstOlimp);
+		comboBox_Olimpiadas.setModel(mdlOlimp);
 	}
 
 }
