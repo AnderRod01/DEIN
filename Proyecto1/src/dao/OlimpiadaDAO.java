@@ -68,6 +68,42 @@ public class OlimpiadaDAO {
 		return lstOlimpiadas;
 	}
 	
+	public void insertOlimpiada (Olimpiada olimpiada) {
+		
+		PreparedStatement ps;
+		Connection conexion = cn.getConexion();
+		try {
+			ps=cn.getConexion().prepareStatement("insert into Olimpiada (nombre, anio, temporada, ciudad) values (?,?,?,?)");
+			ps.setString(1, olimpiada.getNombre());
+			ps.setInt(2, olimpiada.getAnio());
+			ps.setString(3, olimpiada.getTemporada());
+			ps.setString(4, olimpiada.getCiudad());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void updateOlimpiada (Olimpiada olimpiada) {
+		PreparedStatement ps;
+		Connection conexion = cn.getConexion();
+		
+		try {
+			ps= cn.getConexion().prepareStatement("update Olimpiada set nombre = ?, anio = ?, temporada = ?, ciudad = ? where id_olimpida = ?");
+			ps.setString(1, olimpiada.getNombre());
+			ps.setInt(2, olimpiada.getAnio());
+			ps.setString(3, olimpiada.getTemporada());
+			ps.setString(4, olimpiada.getCiudad());
+			ps.setInt(5, olimpiada.getId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 	
 }

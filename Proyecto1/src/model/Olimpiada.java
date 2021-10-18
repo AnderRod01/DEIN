@@ -25,6 +25,28 @@ public class Olimpiada {
 		
 		return nombre+ ", " + ciudad;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public int getAnio() {
+		return anio;
+	}
+
+	public String getTemporada() {
+		return temporada;
+	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+	
+	
 	
 	
 }
