@@ -10,6 +10,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
+
 import java.awt.Insets;
 
 import javax.swing.ButtonGroup;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JList;
 import java.awt.FlowLayout;
+import java.awt.Frame;
+
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.SystemColor;
@@ -63,6 +67,7 @@ public class Indice extends JFrame {
 	 * Create the frame.
 	 */
 	public Indice() {
+		setTitle("Gestor de Olimpiadas");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 750, 492);
 		
@@ -73,6 +78,12 @@ public class Indice extends JFrame {
 		menuBar.add(mnDeportista);
 		
 		JMenuItem mntmAniadir_deportista = new JMenuItem("Añadir");
+		mntmAniadir_deportista.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				NuevoDeportista frame= new NuevoDeportista();
+				frame.setVisible(true);
+			}
+		});
 		mnDeportista.add(mntmAniadir_deportista);
 		
 		JMenuItem mntmGestionar_deportista = new JMenuItem("Gestionar");
