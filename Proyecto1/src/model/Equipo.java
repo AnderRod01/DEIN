@@ -13,9 +13,18 @@ public class Equipo {
 		this.iniciales = iniciales;
 	}
 
-	public Equipo() {
-		super();
+	public int getId() {
+		return id;
 	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getIniciales() {
+		return iniciales;
+	}
+
 	
 	
 }

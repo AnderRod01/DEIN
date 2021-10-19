@@ -12,8 +12,11 @@ import model.Olimpiada;
 
 public class OlimpiadaDAO {
 
-	ConexionDB cn;
-
+	private ConexionDB cn;
+	
+	public OlimpiadaDAO () {
+		cn = new ConexionDB();
+	}
 
 	public ArrayList <Olimpiada> selectOlimpiadas() {
 		PreparedStatement ps;
@@ -50,7 +53,7 @@ public class OlimpiadaDAO {
 		return lstOlimpiadas;
 	}
 	
-	public ArrayList <Olimpiada> getOlimpiadasVerano (){
+	public ArrayList <Olimpiada> selectOlimpiadasVerano (){
 		PreparedStatement ps;
 		ArrayList <Olimpiada> lstOlimpiadas= new ArrayList<Olimpiada>();
 		try {
@@ -105,5 +108,9 @@ public class OlimpiadaDAO {
 		
 	}
 	
+	
+	public void cerrarConexion () {
+		cn.cerrarConexion();
+	}
 	
 }

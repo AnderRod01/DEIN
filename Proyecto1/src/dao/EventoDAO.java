@@ -2,30 +2,83 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import config.ConexionDB;
+import model.Deporte;
 import model.Equipo;
 import model.Evento;
+import model.Olimpiada;
 
 public class EventoDAO {
 
-	ConexionDB conBD;
-
-	public EventoDAO() {
-		conBD = new ConexionDB();
+	private ConexionDB cn;
+	private DeporteDAO cDeportes;
+	private ParticipacionDAO cParticipaciones;
+	
+	public EventoDAO () {
+		this.cn = new ConexionDB();
+		this.cDeportes= new DeporteDAO();
+		this.cParticipaciones= new ParticipacionDAO();
+		
 	}
 
-	public ArrayList<Evento> getEquipos() {
-		ArrayList<Evento> deportes = new ArrayList<Evento>();
-		try (Connection conexion = conBD.getConexion()){
-			String sql = "SELECT id_evento, nombre, id_olimpiada, id_deporte FROM Evento";
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ps.execute();
+	public ArrayList<Evento> selectEventosPorOlimpiada(Olimpiada olimpiada) {
+		PreparedStatement ps;
+		ArrayList <Evento> lstEventos = new ArrayList <Evento>();
+		
+		try {
+			ps=cn.getConexion().prepareStatement("select *  from Evento where id_olimpiada = ?");
+			ps.setInt(1, olimpiada.getId());
+			ResultSet rs= ps.executeQuery();
+			while (rs.next()) {
+				Deporte deporte = cDeportes.selectDeportePorId(rs.getInt(4));
+				lstEventos.add(new Evento (rs.getInt(1), rs.getString(2), olimpiada, deporte));
+			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}				
-		return deportes;
+		}
+		
+		
+		return lstEventos;
 	}
+	
+	public void insertEvento (Evento evento) {
+		PreparedStatement ps;
+		try {
+			ps = cn.getConexion().prepareStatement("insert into Evento (nombre, id_olimpiada, id_deporte) values (?,?,?)");
+			ps.setString(1, evento.getNombre());
+			ps.setInt(2, evento.getOlimpiada().getId());
+			ps.setInt(3, evento.getDeporte().getId());
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}	
+	}
+	
+	public void updateEvento (Evento evento) {
+		PreparedStatement ps;
+		try {
+			ps = cn.getConexion().prepareStatement("update Evento set nombre = ?, id_olimpiada = ?, id_deporte = ? where id_evento = ?");
+			ps.setString(1, evento.getNombre());
+			ps.setInt(2, evento.getOlimpiada().getId());
+			ps.setInt(3, evento.getDeporte().getId());
+			ps.setInt(4, evento.getId_evento());
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public void cerrarConexion() {
+		cDeportes.cerrarConexion();
+		cParticipaciones.cerrarConexion();
+		cn.cerrarConexion();
+	}
+	
 }

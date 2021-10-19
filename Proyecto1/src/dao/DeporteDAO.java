@@ -11,9 +11,13 @@ import model.Deporte;
 
 public class DeporteDAO {
 	
-	ConexionDB cn;
+	private ConexionDB cn;
+	
+	public DeporteDAO () {
+		cn = new ConexionDB();
+	}
 
-	public ArrayList<Deporte> getDeportes() {
+	public ArrayList<Deporte> selectDeportes() {
 		PreparedStatement ps;
 		ArrayList <Deporte> lstDeportes = new ArrayList <Deporte>();
 		
@@ -31,6 +35,24 @@ public class DeporteDAO {
 		
 		return lstDeportes;
 	}
+	
+	public Deporte selectDeportePorId (int id) {
+		PreparedStatement ps;
+		Deporte deporte = null;
+		try {
+			ps = cn.getConexion().prepareStatement("select * from Deporte where id_deporte = ?");
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				deporte = new Deporte (id, rs.getString(2));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return deporte;
+	}
+	
+	
 	
 	public void insertDeporte (Deporte deporte) {
 		PreparedStatement ps;
@@ -58,5 +80,9 @@ public class DeporteDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void cerrarConexion () {
+		cn.cerrarConexion();
 	}
 }

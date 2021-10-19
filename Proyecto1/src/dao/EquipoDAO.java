@@ -13,10 +13,13 @@ import model.Equipo;
 
 public class EquipoDAO {
 
-	ConexionDB cn;
+	private ConexionDB cn;
 
+	public EquipoDAO () {
+		cn =  new ConexionDB();
+	}
 
-	public ArrayList<Equipo> getEquipos() {
+	public ArrayList<Equipo> selectEquipos() {
 		PreparedStatement ps;
 		ArrayList <Equipo> lstEquipos = new ArrayList <Equipo>();
 		
@@ -34,14 +37,31 @@ public class EquipoDAO {
 		
 		return lstEquipos;
 	}
-	//falta lo de abajo y cambiar los nombre de los getDAO
-	public void insertDeporte (Deporte deporte) {
+	
+	public Equipo selectEquipoPorId (int id) {
+		PreparedStatement ps;
+		Equipo equipo =null;
+		try {
+			ps= cn.getConexion().prepareStatement("select * from Equipo where id_equipo = ?");
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				equipo = new Equipo (id, rs.getString(2), rs.getString(3));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return equipo;
+	}
+	
+	public void insertEquipo (Equipo equipo) {
 		PreparedStatement ps;
 		Connection conexion = cn.getConexion();
 		
 		try {
-			ps= cn.getConexion().prepareStatement("insert into Deporte (nombre) values (?)");
-			ps.setString(1, deporte.getNombre());
+			ps= cn.getConexion().prepareStatement("insert into Equipo (nombre, iniciales) values (?, ?)");
+			ps.setString(1, equipo.getNombre());
+			ps.setString(2, equipo.getIniciales());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -49,17 +69,23 @@ public class EquipoDAO {
 		}
 	}
 	
-	public void updateDeporte (Deporte deporte) {
+	public void updateEquipo (Equipo equipo) {
 		PreparedStatement ps;
 		Connection conexion = cn.getConexion();
 		
 		try {
-			ps= cn.getConexion().prepareStatement("update Deporte set nombre = ? where id_deporte = ?");
-			ps.setString(1, deporte.getNombre());
+			ps= cn.getConexion().prepareStatement("update Equipo set nombre = ?, iniciaes = ? where id_equipo = ?");
+			ps.setString(1, equipo.getNombre());
+			ps.setString(2, equipo.getIniciales());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	public void cerrarConexion () {
+		cn.cerrarConexion();
+	}
+	
 }
