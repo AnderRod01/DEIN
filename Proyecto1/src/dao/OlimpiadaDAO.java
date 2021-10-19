@@ -15,7 +15,7 @@ public class OlimpiadaDAO {
 	ConexionDB cn;
 
 
-	public ArrayList <Olimpiada> getOlimpiadas() {
+	public ArrayList <Olimpiada> selectOlimpiadas() {
 		PreparedStatement ps;
 		ArrayList <Olimpiada> lstOlimpiadas= new ArrayList<Olimpiada>();
 		try {
@@ -32,7 +32,7 @@ public class OlimpiadaDAO {
 		return lstOlimpiadas;
 	}
 	
-	public ArrayList <Olimpiada> getOlimpiadasInvierno (){
+	public ArrayList <Olimpiada> selectOlimpiadasInvierno (){
 		PreparedStatement ps;
 		ArrayList <Olimpiada> lstOlimpiadas= new ArrayList<Olimpiada>();
 		try {
@@ -91,7 +91,7 @@ public class OlimpiadaDAO {
 		Connection conexion = cn.getConexion();
 		
 		try {
-			ps= cn.getConexion().prepareStatement("update Olimpiada set nombre = ?, anio = ?, temporada = ?, ciudad = ? where id_olimpida = ?");
+			ps= cn.getConexion().prepareStatement("update Olimpiada set nombre = ?, anio = ?, temporada = ?, ciudad = ? where id_olimpiada = ?");
 			ps.setString(1, olimpiada.getNombre());
 			ps.setInt(2, olimpiada.getAnio());
 			ps.setString(3, olimpiada.getTemporada());

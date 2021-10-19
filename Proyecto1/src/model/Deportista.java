@@ -19,6 +19,26 @@ public class Deportista {
 	public Deportista() {
 		super();
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public int getPeso() {
+		return peso;
+	}
+
+	public int getAltura() {
+		return altura;
+	}
 	
 	
 

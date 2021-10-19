@@ -80,7 +80,7 @@ public class Indice extends JFrame {
 		JMenuItem mntmAniadir_deportista = new JMenuItem("Añadir");
 		mntmAniadir_deportista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				NuevoDeportista frame= new NuevoDeportista();
+				AlterDeportista frame= new AlterDeportista();
 				frame.setVisible(true);
 			}
 		});
@@ -158,7 +158,7 @@ public class Indice extends JFrame {
 		btnAniadirOlimpiada.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				NuevaOlimpiada frame = new NuevaOlimpiada();
+				AlterOlimpiada frame = new AlterOlimpiada();
 				frame.setVisible(true);
 				
 			}
@@ -230,7 +230,7 @@ public class Indice extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				OlimpiadaDAO olimpDao= new OlimpiadaDAO();
-				ArrayList <Olimpiada> lstOlimp= olimpDao.getOlimpiadasInvierno();
+				ArrayList <Olimpiada> lstOlimp= olimpDao.selectOlimpiadasInvierno();
 				DefaultComboBoxModel<Olimpiada> mdlOlimp= new DefaultComboBoxModel<Olimpiada>();
 				mdlOlimp.addAll(lstOlimp);
 				comboBox_Olimpiadas.setModel(mdlOlimp);
@@ -352,7 +352,7 @@ public class Indice extends JFrame {
 	
 	private static void cargarComboOlimpiadas(JComboBox<Olimpiada> comboBox_Olimpiadas ) {
 		OlimpiadaDAO olimpDao= new OlimpiadaDAO();
-		ArrayList <Olimpiada> lstOlimp= olimpDao.getOlimpiadas();
+		ArrayList <Olimpiada> lstOlimp= olimpDao.selectOlimpiadas();
 		DefaultComboBoxModel<Olimpiada> mdlOlimp= new DefaultComboBoxModel<Olimpiada>();
 		mdlOlimp.addAll(lstOlimp);
 		comboBox_Olimpiadas.setModel(mdlOlimp);

@@ -11,8 +11,12 @@ public class Deporte {
 		this.nombre = nombre;
 	}
 
-	public Deporte() {
-		super();
+	public String getNombre() {
+		return nombre;
+	}
+
+	public int getId() {
+		return id;
 	}
 	
 	
