@@ -54,6 +54,7 @@ public class Indice extends JFrame {
 	private EventoDAO cEvento;
 	private JButton btnAniadirOlimpiada, btnEditarOlimpiada, btnBorrarOlimpiada;
 	private JButton btnAniadirEvento, btnEditarEvento, btnBorrarEvento;
+	private JRadioButton rdbtnSummer, rdbtnWinter;
 
 	/**
 	 * Launch the application.
@@ -166,6 +167,11 @@ public class Indice extends JFrame {
 				AlterOlimpiada frame = new AlterOlimpiada();
 				frame.setVisible(true);
 				
+				if (rdbtnSummer.isSelected())
+					cargarComboOlimpiadasVerano();
+				else
+					cargarComboOlimpiadasInvierno();
+				
 			}
 		});
 		btnAniadirOlimpiada.setIcon(new ImageIcon(Indice.class.getResource("/images/new.png")));
@@ -184,6 +190,17 @@ public class Indice extends JFrame {
 		panel_olimpiadas.add(btnEditarOlimpiada, gbc_btnEditarOlimpiada);
 		
 		btnBorrarOlimpiada = new JButton("");
+		btnBorrarOlimpiada.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				cOlimpiada.deleteOlimpiada((Olimpiada) comboBox_Olimpiadas.getSelectedItem());
+				if (rdbtnSummer.isSelected())
+					cargarComboOlimpiadasVerano();
+				else
+					cargarComboOlimpiadasInvierno();
+				
+			}
+		});
 		btnBorrarOlimpiada.setIcon(new ImageIcon(Indice.class.getResource("/images/trash.png")));
 		GridBagConstraints gbc_btnBorrarOlimpiada = new GridBagConstraints();
 		gbc_btnBorrarOlimpiada.insets = new Insets(0, 0, 5, 5);
@@ -225,7 +242,7 @@ public class Indice extends JFrame {
 		
 		ButtonGroup bg = new ButtonGroup();
 		
-		JRadioButton rdbtnSummer = new JRadioButton("Verano");
+		rdbtnSummer = new JRadioButton("Verano");
 		rdbtnSummer.setSelected(true);
 		rdbtnSummer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -237,7 +254,7 @@ public class Indice extends JFrame {
 		panel_rdbtn_olimpiadas.add(rdbtnSummer);
 		bg.add(rdbtnSummer);
 		
-		JRadioButton rdbtnWinter = new JRadioButton("Invierno");
+		rdbtnWinter = new JRadioButton("Invierno");
 		rdbtnWinter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				

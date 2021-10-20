@@ -1,50 +1,57 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.GridBagLayout;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
-public class AlterOlimpiada extends JFrame {
+import dao.OlimpiadaDAO;
+import model.Olimpiada;
 
+public class AlterOlimpiada extends JDialog {
+
+	private final JPanel contentPanel = new JPanel();
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_2;
+	private JTextField textField_Anio;
+	private JTextField textField_Ciudad;
+	private OlimpiadaDAO cOlimpiada;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AlterOlimpiada frame = new AlterOlimpiada();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		try {
+			AlterOlimpiada dialog = new AlterOlimpiada();
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the dialog.
 	 */
 	public AlterOlimpiada() {
+		
+		cOlimpiada =  new OlimpiadaDAO();
+		
+		
+		
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 452, 251);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -86,14 +93,14 @@ public class AlterOlimpiada extends JFrame {
 		gbc_lblAnio.gridy = 0;
 		panel_lbl_txtfield.add(lblAnio, gbc_lblAnio);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.anchor = GridBagConstraints.WEST;
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 0;
-		panel_lbl_txtfield.add(textField, gbc_textField);
-		textField.setColumns(10);
+		textField_Anio = new JTextField();
+		GridBagConstraints gbc_textField_Anio = new GridBagConstraints();
+		gbc_textField_Anio.anchor = GridBagConstraints.WEST;
+		gbc_textField_Anio.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_Anio.gridx = 1;
+		gbc_textField_Anio.gridy = 0;
+		panel_lbl_txtfield.add(textField_Anio, gbc_textField_Anio);
+		textField_Anio.setColumns(10);
 		
 		JLabel lblTemporada = new JLabel("Temporada:");
 		GridBagConstraints gbc_lblTemporada = new GridBagConstraints();
@@ -103,14 +110,14 @@ public class AlterOlimpiada extends JFrame {
 		gbc_lblTemporada.gridy = 1;
 		panel_lbl_txtfield.add(lblTemporada, gbc_lblTemporada);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Verano", "Invierno"}));
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.insets = new Insets(0, 0, 5, 0);
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.gridx = 1;
-		gbc_comboBox.gridy = 1;
-		panel_lbl_txtfield.add(comboBox, gbc_comboBox);
+		JComboBox comboBox_Temporada = new JComboBox();
+		comboBox_Temporada.setModel(new DefaultComboBoxModel(new String[] {"Summer", "Winter"}));
+		GridBagConstraints gbc_comboBox_Temporada = new GridBagConstraints();
+		gbc_comboBox_Temporada.insets = new Insets(0, 0, 5, 0);
+		gbc_comboBox_Temporada.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBox_Temporada.gridx = 1;
+		gbc_comboBox_Temporada.gridy = 1;
+		panel_lbl_txtfield.add(comboBox_Temporada, gbc_comboBox_Temporada);
 		
 		JLabel lblCiudad = new JLabel("Ciudad:");
 		GridBagConstraints gbc_lblCiudad = new GridBagConstraints();
@@ -120,13 +127,13 @@ public class AlterOlimpiada extends JFrame {
 		gbc_lblCiudad.gridy = 2;
 		panel_lbl_txtfield.add(lblCiudad, gbc_lblCiudad);
 		
-		textField_2 = new JTextField();
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 1;
-		gbc_textField_2.gridy = 2;
-		panel_lbl_txtfield.add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
+		textField_Ciudad = new JTextField();
+		GridBagConstraints gbc_textField_Ciudad = new GridBagConstraints();
+		gbc_textField_Ciudad.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_Ciudad.gridx = 1;
+		gbc_textField_Ciudad.gridy = 2;
+		panel_lbl_txtfield.add(textField_Ciudad, gbc_textField_Ciudad);
+		textField_Ciudad.setColumns(10);
 		
 		JPanel panel_btn = new JPanel();
 		GridBagConstraints gbc_panel_btn = new GridBagConstraints();
@@ -136,6 +143,19 @@ public class AlterOlimpiada extends JFrame {
 		contentPane.add(panel_btn, gbc_panel_btn);
 		
 		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				Olimpiada olimp =  new Olimpiada(0,
+						textField_Anio.getText() + " " + (String)comboBox_Temporada.getSelectedItem(), 
+						Integer.parseInt(textField_Anio.getText()), 
+						(String) comboBox_Temporada.getSelectedItem(),
+						textField_Ciudad.getText());
+				
+				cOlimpiada.insertOlimpiada(olimp);
+				dispose();
+			}
+		});
 		panel_btn.add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
@@ -147,5 +167,4 @@ public class AlterOlimpiada extends JFrame {
 		});
 		panel_btn.add(btnCancelar);
 	}
-
 }

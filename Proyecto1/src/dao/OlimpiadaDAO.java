@@ -91,7 +91,7 @@ public class OlimpiadaDAO {
 	
 	public void updateOlimpiada (Olimpiada olimpiada) {
 		PreparedStatement ps;
-		Connection conexion = cn.getConexion();
+		
 		
 		try {
 			ps= cn.getConexion().prepareStatement("update Olimpiada set nombre = ?, anio = ?, temporada = ?, ciudad = ? where id_olimpiada = ?");
@@ -108,6 +108,21 @@ public class OlimpiadaDAO {
 		
 	}
 	
+	public void deleteOlimpiada (Olimpiada olimpiada)
+	{
+		PreparedStatement ps;
+		
+		
+		try {
+			ps=cn.getConexion().prepareStatement("delete from Olimpiada where id_Olimpiada = ?");
+			ps.setInt(1, olimpiada.getId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public void cerrarConexion () {
 		cn.cerrarConexion();
