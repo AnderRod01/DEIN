@@ -24,11 +24,13 @@ import model.Olimpiada;
 public class AlterOlimpiada extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JPanel contentPane;
+	private JPanel contentPane, panel_btn;
 	private JTextField textField_Anio;
 	private JTextField textField_Ciudad;
 	private OlimpiadaDAO cOlimpiada;
-
+	private JButton btnAceptar, btnCancelar;
+	private JComboBox comboBox_Temporada;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -46,36 +48,34 @@ public class AlterOlimpiada extends JDialog {
 	 * Create the dialog.
 	 */
 	public AlterOlimpiada() {
+		setModal(true);
 		
 		cOlimpiada =  new OlimpiadaDAO();
+		dibujar();
 		
-		
-		
+		gestionarEventos();
+
+	}
+	
+	private void dibujar () {
 		setResizable(false);
-		setBounds(100, 100, 452, 251);
+		setBounds(100, 100, 452, 210);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
-		
-		JLabel lblModificarOlimpiadas = new JLabel("NUEVA OLIMPIADA");
-		GridBagConstraints gbc_lblModificarOlimpiadas = new GridBagConstraints();
-		gbc_lblModificarOlimpiadas.insets = new Insets(0, 0, 5, 0);
-		gbc_lblModificarOlimpiadas.gridx = 0;
-		gbc_lblModificarOlimpiadas.gridy = 0;
-		contentPane.add(lblModificarOlimpiadas, gbc_lblModificarOlimpiadas);
 		
 		JPanel panel_lbl_txtfield = new JPanel();
 		GridBagConstraints gbc_panel_lbl_txtfield = new GridBagConstraints();
 		gbc_panel_lbl_txtfield.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_lbl_txtfield.fill = GridBagConstraints.BOTH;
 		gbc_panel_lbl_txtfield.gridx = 0;
-		gbc_panel_lbl_txtfield.gridy = 1;
+		gbc_panel_lbl_txtfield.gridy = 0;
 		contentPane.add(panel_lbl_txtfield, gbc_panel_lbl_txtfield);
 		GridBagLayout gbl_panel_lbl_txtfield = new GridBagLayout();
 		gbl_panel_lbl_txtfield.columnWidths = new int[]{0, 0, 0};
@@ -139,12 +139,23 @@ public class AlterOlimpiada extends JDialog {
 		GridBagConstraints gbc_panel_btn = new GridBagConstraints();
 		gbc_panel_btn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panel_btn.gridx = 0;
-		gbc_panel_btn.gridy = 2;
+		gbc_panel_btn.gridy = 1;
 		contentPane.add(panel_btn, gbc_panel_btn);
 		
-		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar = new JButton("Aceptar");
+		
+		panel_btn.add(btnAceptar);
+		
+		btnCancelar = new JButton("Cancelar");
+		
+		panel_btn.add(btnCancelar);
+		
+	}
+	
+	private void gestionarEventos() {
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				
 				Olimpiada olimp =  new Olimpiada(0,
 						textField_Anio.getText() + " " + (String)comboBox_Temporada.getSelectedItem(), 
@@ -156,15 +167,12 @@ public class AlterOlimpiada extends JDialog {
 				dispose();
 			}
 		});
-		panel_btn.add(btnAceptar);
 		
-		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				dispose();
 			}
 		});
-		panel_btn.add(btnCancelar);
 	}
 }
