@@ -22,6 +22,7 @@ import dao.OlimpiadaDAO;
 import model.Olimpiada;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Color;
 
 public class AlterOlimpiada extends JDialog {
 
@@ -92,6 +93,7 @@ public class AlterOlimpiada extends JDialog {
 		contentPane.setLayout(gbl_contentPane);
 		
 		JPanel panel_lbl_txtfield = new JPanel();
+		panel_lbl_txtfield.setBackground(new Color(204, 255, 255));
 		GridBagConstraints gbc_panel_lbl_txtfield = new GridBagConstraints();
 		gbc_panel_lbl_txtfield.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_lbl_txtfield.fill = GridBagConstraints.BOTH;

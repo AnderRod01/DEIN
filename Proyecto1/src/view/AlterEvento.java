@@ -24,6 +24,7 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class AlterEvento extends JDialog {
 
@@ -33,23 +34,45 @@ public class AlterEvento extends JDialog {
 	private DeporteDAO cDeporte;
 	private EventoDAO cEvento; 
 	private JComboBox<Deporte> comboBox_Deporte;
+	private JButton btnCancelar;
+	private JButton btnAceptar;
+	private Evento evento;
 
-	/**
-	 * Launch the application.
-	 */
 	
 	/**
 	 * Create the dialog.
+	 * @wbp.parser.constructor
 	 */
 	public AlterEvento(Olimpiada olimpiada) {
+		this.olimpiada=olimpiada;
 		cDeporte = new DeporteDAO();
 		cEvento = new EventoDAO();
+		dibujar();
+		gestionarEventos();
+	}
+	
+	public AlterEvento(Olimpiada olimpiada, Evento evento) {
+		this.olimpiada=olimpiada;
+		this.evento=evento;
+		cDeporte = new DeporteDAO();
+		cEvento = new EventoDAO();
+		dibujar();
+		gestionarEventos();
+	}
+
+
+	
+
+
+	private void dibujar() {
+		
 		
 		setTitle("Evento");
 		setResizable(false);
 		setModal(true);
 		setBounds(100, 100, 450, 141);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(new Color(204, 255, 255));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
@@ -76,6 +99,9 @@ public class AlterEvento extends JDialog {
 			gbc_textField_Nombre.gridy = 0;
 			contentPanel.add(textField_Nombre, gbc_textField_Nombre);
 			textField_Nombre.setColumns(10);
+			if (evento!= null) {
+				textField_Nombre.setText(evento.getNombre());
+			}
 		}
 		{
 			JLabel lblDeporte = new JLabel("Deporte: ");
@@ -91,10 +117,14 @@ public class AlterEvento extends JDialog {
 			ArrayList <Deporte> lstDeporte = cDeporte.selectDeportes();
 			mdlDeporte.addAll(lstDeporte);
 			
-			comboBox_Deporte = new JComboBox();
+			comboBox_Deporte = new JComboBox<Deporte>();
 			comboBox_Deporte.setModel(mdlDeporte);
 			if (mdlDeporte.getSize() >0) {
 				comboBox_Deporte.setSelectedIndex(0);
+			}
+			
+			if (evento!=null) {
+				comboBox_Deporte.setSelectedItem(evento.getDeporte());
 			}
 			
 			GridBagConstraints gbc_comboBox_Deporte = new GridBagConstraints();
@@ -108,31 +138,57 @@ public class AlterEvento extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton btnAceptar = new JButton("Aceptar");
-				btnAceptar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						Evento evento =  new Evento(0, textField_Nombre.getText(), olimpiada, (Deporte) comboBox_Deporte.getSelectedItem());
-						cEvento.insertEvento(evento);
-						dispose();
-					}
-				});
+				btnAceptar = new JButton("Aceptar");
+				
 				btnAceptar.setActionCommand("OK");
 				buttonPane.add(btnAceptar);
 				getRootPane().setDefaultButton(btnAceptar);
 				
 			}
 			{
-				JButton btnCancelar = new JButton("Cancelar");
-				btnCancelar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						dispose();
-					}
-				});
+				btnCancelar = new JButton("Cancelar");
+				
 				
 				btnCancelar.setActionCommand("Cancel");
 				buttonPane.add(btnCancelar);
 			}
 		}
 	}
+	
+	
+	
+	private void gestionarEventos() {
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cerrar();
+			}
+		});
+		
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (evento ==null) {
+					evento =  new Evento(0, textField_Nombre.getText(), olimpiada, (Deporte) comboBox_Deporte.getSelectedItem());
+					cEvento.insertEvento(evento);
+					cerrar();
+				}else {
+					evento = new Evento(evento.getId_evento(), textField_Nombre.getText(),olimpiada, (Deporte)comboBox_Deporte.getSelectedItem());
+					cEvento.updateEvento(evento);
+					cerrar();
+				}
+				
+			}
+		});
+		
+		
+		
+	}
+	
+	private void cerrar() {
+		cDeporte.cerrarConexion();
+		cEvento.cerrarConexion();
+		setVisible(false);
+	}
+	
 
 }

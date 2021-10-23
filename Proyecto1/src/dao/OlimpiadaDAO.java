@@ -125,7 +125,7 @@ public class OlimpiadaDAO {
 		
 	}
 	
-	public void deleteOlimpiada (Olimpiada olimpiada)
+	public boolean deleteOlimpiada (Olimpiada olimpiada)
 	{
 		PreparedStatement ps;
 		
@@ -136,9 +136,9 @@ public class OlimpiadaDAO {
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		}
-		
+		return true;
 	}
 	
 	public void cerrarConexion () {

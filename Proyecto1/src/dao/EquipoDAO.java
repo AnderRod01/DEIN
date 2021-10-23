@@ -39,20 +39,37 @@ public class EquipoDAO {
 		return lstEquipos;
 	}
 	
-	public Equipo selectEquipoPorId (int id) {
+	public Equipo selectIdEquipo (String nombre, String iniciales) {
 		PreparedStatement ps;
 		Equipo equipo =null;
 		try {
-			ps= cn.getConexion().prepareStatement("select * from Equipo where id_equipo = ?");
+			ps= cn.getConexion().prepareStatement("select * from Equipo where nombre = ? and iniciales = ?");
+			ps.setString(1, nombre);
+			ps.setString(2, iniciales);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				equipo = new Equipo (id, rs.getString(2), rs.getString(3));
+				equipo = new Equipo (rs.getInt(1), rs.getString(2), rs.getString(3));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return equipo;
+	}
+	
+	public Equipo selectEquipoPorId(int id) {
+		PreparedStatement ps;
+		try {
+			ps = cn.getConexion().prepareStatement("select * from Equipo where id_equipo = ?");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return new Equipo(rs.getInt(1), rs.getString(2), rs.getString(3));
+			}
+		} catch(SQLException e) {
+			return null;
+		}
+		return null;
 	}
 	
 	public void insertEquipo (Equipo equipo) {
@@ -78,6 +95,7 @@ public class EquipoDAO {
 			ps= cn.getConexion().prepareStatement("update Equipo set nombre = ?, iniciales = ? where id_equipo = ?");
 			ps.setString(1, equipo.getNombre());
 			ps.setString(2, equipo.getIniciales());
+			ps.setInt(3, equipo.getId());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -101,7 +119,7 @@ public class EquipoDAO {
 		return false;
 	}
 	
-	public void deleteEquipo (Equipo equipo)
+	public boolean deleteEquipo (Equipo equipo)
 	{
 		PreparedStatement ps;
 		
@@ -111,10 +129,9 @@ public class EquipoDAO {
 			ps.setInt(1, equipo.getId());
 			ps.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		}
-		
+		return true;
 	}
 	
 	public void cerrarConexion () {

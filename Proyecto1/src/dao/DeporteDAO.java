@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import config.ConexionDB;
 import model.Deporte;
+import model.Equipo;
 
 public class DeporteDAO {
 	
@@ -73,6 +74,7 @@ public class DeporteDAO {
 		try {
 			ps= cn.getConexion().prepareStatement("update Deporte set nombre = ? where id_deporte = ?");
 			ps.setString(1, deporte.getNombre());
+			ps.setInt(2, deporte.getId());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -80,6 +82,32 @@ public class DeporteDAO {
 		}
 	}
 	
+	public boolean deleteDeporte (Deporte deporte) {
+		PreparedStatement ps;
+		try {
+			ps=cn.getConexion().prepareStatement("delete from Deporte where id_deporte = ?");
+			ps.setInt(1, deporte.getId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean existeDeporte (Deporte deporte) {
+		PreparedStatement ps;
+		try {
+			ps= cn.getConexion().prepareStatement("select * from Deporte where nombre = ?");
+			ps.setString(1, deporte.getNombre());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			return true;
+		}
+		return false;
+	}
 	
 	
 	public void cerrarConexion () {

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.DefaultListModel;
@@ -19,6 +20,7 @@ import model.Equipo;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -42,7 +44,9 @@ public class AlterDeporte extends JDialog {
 	private boolean editar;
 	private DeporteDAO cDeporte;
 	private DefaultListModel<Deporte> mdlDeporte;
-	private boolean eliminando = false;
+	private boolean modificandoDatos = false;
+	private int idDeporte;
+	private JButton btnAceptar;
 
 	
 	/**
@@ -53,13 +57,15 @@ public class AlterDeporte extends JDialog {
 		cDeporte= new DeporteDAO();
 		
 		if (this.editar) {
-			setTitle("Editar Deporte");
+			
 			dibujarEditar();
 			cargarDeportes();
 			cargarTxtField();
+			gestionarEventos();
 		}else {
-			setTitle("Nuevo Deporte");
+			
 			dibujarNuevo();
+			gestionarEventos();
 		}
 		
 		
@@ -67,6 +73,7 @@ public class AlterDeporte extends JDialog {
 	}
 	
 	private void dibujarEditar() {
+		setTitle("Editar Deportes");
 		setResizable(false);
 		setModal(true);
 		setBounds(100, 100, 689, 243);
@@ -128,7 +135,6 @@ public class AlterDeporte extends JDialog {
 				list_Deporte = new JList();
 				
 				scrollPane.setViewportView(list_Deporte);
-				cargarDeportes();
 			}
 		}
 		{
@@ -165,6 +171,7 @@ public class AlterDeporte extends JDialog {
 	
 
 	public void dibujarNuevo() {
+		setTitle("Nuevo Deporte");
 		setModal(true);
 		setResizable(false);
 		setBounds(100, 100, 372, 129);
@@ -177,6 +184,7 @@ public class AlterDeporte extends JDialog {
 		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_contentPanel.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
+		contentPanel.setBackground(new Color(204, 255, 255));
 		{
 			JLabel lblNombre = new JLabel("Nombre:");
 			GridBagConstraints gbc_lblNombre = new GridBagConstraints();
@@ -185,6 +193,7 @@ public class AlterDeporte extends JDialog {
 			gbc_lblNombre.gridx = 0;
 			gbc_lblNombre.gridy = 0;
 			contentPanel.add(lblNombre, gbc_lblNombre);
+			
 		}
 		{
 			textField_Nombre = new JTextField();
@@ -200,15 +209,15 @@ public class AlterDeporte extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Aceptar");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				btnAceptar = new JButton("Aceptar");
+				btnAceptar.setActionCommand("OK");
+				buttonPane.add(btnAceptar);
+				getRootPane().setDefaultButton(btnAceptar);
 			}
 			{
-				JButton cancelButton = new JButton("Cancelar");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				btnCerrar = new JButton("Cancelar");
+				btnCerrar.setActionCommand("Cancel");
+				buttonPane.add(btnCerrar);
 			}
 		}
 	}
@@ -227,38 +236,63 @@ public class AlterDeporte extends JDialog {
 				
 				@Override
 				public void valueChanged(ListSelectionEvent e) {
-					if (!eliminando)
+					if (!modificandoDatos)
 						cargarTxtField();
-					
-					eliminando = false;
+					modificandoDatos = false;
 				}
 			});
-				
+			
 			btnBorrar.addActionListener(new ActionListener () {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					eliminando = true;
-					cDeporte.deleteDeporte(list_Deporte.getSelectedValue());
-					cargarDeportes();
-					cargarTxtField();
+					modificandoDatos = true;
+				
+					int reply = JOptionPane.showConfirmDialog(getContentPane(), "Seguro que quieres borrar el deporte?", "Borrar deporte", JOptionPane.YES_NO_OPTION);
+					if (reply == JOptionPane.YES_OPTION) {
+					    if(cDeporte.deleteDeporte( (Deporte) list_Deporte.getSelectedValue())) {
+					    	JOptionPane.showMessageDialog(getContentPane(), "Deporte borrado correctamente");
+					    	cargarDeportes();
+					    }
+					    else {
+					    	JOptionPane.showMessageDialog(getContentPane(), "No se puede borrar, existen dependencias");
+					    }
+					} 	
+					
+					
 				}
 				
 			});
 			
 			btnActualizar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					Equipo equipo = new Equipo(idEquipo,textField_Nombre.getText() , textField_Iniciales.getText());
+					modificandoDatos=true;
+					idDeporte= ((Deporte) list_Deporte.getSelectedValue()).getId();
+					Deporte deporteNuevo = new Deporte(idDeporte, textField_Nombre.getText());
 					
-					if (!cEquipo.existeEquipo(equipo)) {
-						cEquipo.updateEquipo(equipo);
-						cargarEquipos();
+					
+					if (!cDeporte.existeDeporte(deporteNuevo)) {
+						cDeporte.updateDeporte(deporteNuevo);
+						cargarDeportes();
 					}
-					
 				}
 			});
 			
 		} else {
+			
+			btnAceptar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Deporte DeporteNuevo = new Deporte(0,textField_Nombre.getText());
+					
+					if (!cDeporte.existeDeporte(DeporteNuevo)) {
+						cDeporte.insertDeporte(DeporteNuevo);
+					}
+					
+					cerrar();
+				}
+				
+			});
 			
 		}
 	}
@@ -275,9 +309,12 @@ public class AlterDeporte extends JDialog {
 			list_Deporte.setSelectedIndex(0);
 			btnActualizar.setEnabled(true);
 			btnBorrar.setEnabled(true);
+			textField_Nombre.setEnabled(true);
 		}else {
 			btnActualizar.setEnabled(false);
 			btnBorrar.setEnabled(false);
+			textField_Nombre.setText("");
+			textField_Nombre.setEnabled(false);
 		}		
 	}
 	

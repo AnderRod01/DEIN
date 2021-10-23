@@ -32,13 +32,19 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import dao.DeporteDAO;
+import dao.DeportistaDAO;
+import dao.EquipoDAO;
 import dao.EventoDAO;
 import dao.OlimpiadaDAO;
+import dao.ParticipacionDAO;
 import model.Evento;
 import model.Olimpiada;
+import model.Participacion;
 
 import javax.swing.JRadioButton;
 import javax.swing.DefaultComboBoxModel;
@@ -46,6 +52,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Toolkit;
 
 public class Indice extends JFrame {
 
@@ -54,15 +61,26 @@ public class Indice extends JFrame {
 	private JList<Evento> list_Evento;
 	private OlimpiadaDAO cOlimpiada;
 	private EventoDAO cEvento;
+	private DeporteDAO cDeporte;
+	private EquipoDAO cEquipo;
+	private DeportistaDAO cDeportista;
+	private ParticipacionDAO cParticipacion;
 	private JButton btnAniadirOlimpiada, btnEditarOlimpiada, btnBorrarOlimpiada;
 	private JButton btnAniadirEvento, btnEditarEvento, btnBorrarEvento;
 	private JRadioButton rdbtnSummer, rdbtnWinter;
 	private DefaultComboBoxModel<Olimpiada> mdlOlimpiada;
 	private DefaultListModel<Evento> mdlEvento;
+	private DefaultListModel <Participacion> mdlPart;
 	private JMenuItem mntmAniadir_equipo;
 	private JMenuItem mntmGestionar_equipo;
 	private JMenuItem mntmAniadir_deporte;
 	private JMenuItem mntmGestionar_Deporte;
+	private JMenuItem mntmAniadir_deportista;
+	private JMenuItem mntmGestionar_deportista;
+	private JList<Participacion> list_Participaciones;
+	private JButton btnAniadir_Participacion;
+	private JButton btnEditar_Participacion;
+	private JButton btnBorrar_Participacion;
 
 
 	/**
@@ -85,15 +103,25 @@ public class Indice extends JFrame {
 	 * Create the frame.
 	 */
 	public Indice() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Indice.class.getResource("/images/sports.jpg")));
 		
 		
-		cOlimpiada= new OlimpiadaDAO();
-		cEvento = new EventoDAO();
-			
+		iniciarDAO();
+
 		dibujar();
 		cargarComboOlimpiadasVerano();
 		cargarEventos();
+		cargarParticipaciones();
 		gestionarEventos();
+	}
+
+	private void iniciarDAO() {
+		cOlimpiada= new OlimpiadaDAO();
+		cEvento = new EventoDAO();
+		cDeportista= new DeportistaDAO();
+		cEquipo = new EquipoDAO ();
+		cDeporte = new DeporteDAO();
+		cParticipacion = new ParticipacionDAO();
 	}
 	
 	private void dibujar () {
@@ -107,17 +135,18 @@ public class Indice extends JFrame {
 		JMenu mnDeportista = new JMenu("Deportistas");
 		menuBar.add(mnDeportista);
 		
-		JMenuItem mntmAniadir_deportista = new JMenuItem("Añadir");
-		mntmAniadir_deportista.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				AlterDeportista frame= new AlterDeportista();
-				frame.setVisible(true);
-			}
-		});
+		mntmAniadir_deportista = new JMenuItem("Añadir");
+		
 		mnDeportista.add(mntmAniadir_deportista);
 		
-		JMenuItem mntmGestionar_deportista = new JMenuItem("Gestionar");
+		mntmGestionar_deportista = new JMenuItem("Gestionar");
+		
 		mnDeportista.add(mntmGestionar_deportista);
+		
+		if(cDeportista.selectDeportista().isEmpty())
+			mntmGestionar_deportista.setEnabled(false);
+		else
+			mntmGestionar_deportista.setEnabled(true);
 		
 		JMenu mnDeporte = new JMenu("Deportes");
 		menuBar.add(mnDeporte);
@@ -128,6 +157,14 @@ public class Indice extends JFrame {
 		
 		mntmGestionar_Deporte = new JMenuItem("Gestionar");
 		
+		if (cDeporte.selectDeportes().isEmpty())
+			mntmGestionar_Deporte.setEnabled(false);
+		else 
+			mntmGestionar_Deporte.setEnabled(true);
+		
+			
+		
+		
 		mnDeporte.add(mntmGestionar_Deporte);
 		
 		JMenu mnEquipo = new JMenu("Equipos");
@@ -137,7 +174,12 @@ public class Indice extends JFrame {
 		
 		mnEquipo.add(mntmAniadir_equipo);
 		
-		mntmGestionar_equipo = new JMenuItem("Gesionar");
+		mntmGestionar_equipo = new JMenuItem("Gestionar");
+		
+		if(cEquipo.selectEquipos().isEmpty())
+			mntmGestionar_equipo.setEnabled(false);
+		else
+			mntmGestionar_equipo.setEnabled(true);
 		
 		mnEquipo.add(mntmGestionar_equipo);
 		contentPane = new JPanel();
@@ -151,6 +193,7 @@ public class Indice extends JFrame {
 		contentPane.setLayout(gbl_contentPane);
 		
 		JPanel panel_olimpiadas = new JPanel();
+		panel_olimpiadas.setBackground(new Color(204, 255, 255));
 		panel_olimpiadas.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagConstraints gbc_panel_olimpiadas = new GridBagConstraints();
 		gbc_panel_olimpiadas.insets = new Insets(0, 0, 5, 0);
@@ -242,6 +285,7 @@ public class Indice extends JFrame {
 		bg.add(rdbtnWinter);
 		
 		JPanel panel_Eventos = new JPanel();
+		panel_Eventos.setBackground(new Color(204, 255, 255));
 		panel_Eventos.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagConstraints gbc_panel_Eventos = new GridBagConstraints();
 		gbc_panel_Eventos.insets = new Insets(0, 0, 5, 0);
@@ -270,6 +314,7 @@ public class Indice extends JFrame {
 		
 		
 		JPanel panel_btn_Evento = new JPanel();
+		panel_btn_Evento.setBackground(new Color(204, 255, 255));
 		GridBagConstraints gbc_panel_btn_Evento = new GridBagConstraints();
 		gbc_panel_btn_Evento.fill = GridBagConstraints.BOTH;
 		gbc_panel_btn_Evento.gridx = 1;
@@ -292,6 +337,7 @@ public class Indice extends JFrame {
 		panel_btn_Evento.add(btnAniadirEvento, gbc_btnAniadirEvento);
 		
 		btnEditarEvento = new JButton("");
+		
 		btnEditarEvento.setIcon(new ImageIcon(Indice.class.getResource("/images/edit.png")));
 		GridBagConstraints gbc_btnEditarEvento = new GridBagConstraints();
 		gbc_btnEditarEvento.insets = new Insets(0, 0, 5, 0);
@@ -308,6 +354,7 @@ public class Indice extends JFrame {
 		panel_btn_Evento.add(btnBorrarEvento, gbc_btnBorrarEvento);
 		
 		JPanel panel_Participaciones = new JPanel();
+		panel_Participaciones.setBackground(new Color(204, 255, 255));
 		panel_Participaciones.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagConstraints gbc_panel_Participaciones = new GridBagConstraints();
 		gbc_panel_Participaciones.fill = GridBagConstraints.BOTH;
@@ -329,25 +376,34 @@ public class Indice extends JFrame {
 		gbc_scrollPane_Participaciones.gridy = 0;
 		panel_Participaciones.add(scrollPane_Participaciones, gbc_scrollPane_Participaciones);
 		
-		JList list_Participaciones = new JList();
+		list_Participaciones = new JList();
 		list_Participaciones.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "PARTICIPACIONES", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 92, 92)));
 		scrollPane_Participaciones.setViewportView(list_Participaciones);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(204, 255, 255));
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		flowLayout.setHgap(15);
 		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panel.gridx = 1;
 		gbc_panel.gridy = 0;
 		panel_Participaciones.add(panel, gbc_panel);
 		
-		JButton btnNewButton = new JButton("New button");
-		panel.add(btnNewButton);
+		btnAniadir_Participacion = new JButton("");
 		
-		JButton btnNewButton_1 = new JButton("New button");
-		panel.add(btnNewButton_1);
+		btnAniadir_Participacion.setIcon(new ImageIcon(Indice.class.getResource("/images/new.png")));
+		panel.add(btnAniadir_Participacion);
 		
-		JButton btnNewButton_2 = new JButton("New button");
-		panel.add(btnNewButton_2);
+		btnEditar_Participacion = new JButton("");
+		
+		btnEditar_Participacion.setIcon(new ImageIcon(Indice.class.getResource("/images/edit.png")));
+		panel.add(btnEditar_Participacion);
+		
+		btnBorrar_Participacion = new JButton("");
+		
+		btnBorrar_Participacion.setIcon(new ImageIcon(Indice.class.getResource("/images/trash.png")));
+		panel.add(btnBorrar_Participacion);
 		
 		this.pack();
 	}
@@ -358,6 +414,7 @@ public class Indice extends JFrame {
 				AlterEvento frame = new AlterEvento ((Olimpiada) comboBox_Olimpiadas.getSelectedItem());
 				frame.setVisible(true);
 				cargarEventos();
+				cargarParticipaciones();
 			}
 		});
 		
@@ -365,10 +422,15 @@ public class Indice extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				cargarComboOlimpiadasInvierno();
-				if (mdlOlimpiada.getSize()>0)
+				if (mdlOlimpiada.getSize()>0) {
 					cargarEventos();
-				else
+					cargarParticipaciones();
+				}
+				else {
 					mdlEvento.clear();
+					mdlPart.clear();
+				}
+					
 			}
 		});
 		
@@ -376,10 +438,15 @@ public class Indice extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				cargarComboOlimpiadasVerano();
-				if (mdlOlimpiada.getSize()>0)
+				if (mdlOlimpiada.getSize()>0) {
 					cargarEventos();
-				else
+					cargarParticipaciones();
+				}
+				else {
 					mdlEvento.clear();
+					mdlPart.clear();
+				}
+					
 				
 			}
 		});
@@ -387,20 +454,43 @@ public class Indice extends JFrame {
 		comboBox_Olimpiadas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cargarEventos();
+				if (mdlEvento.getSize()>0) {
+					cargarParticipaciones();
+				}else {
+					mdlPart.clear();
+				}
+				
 			}
 		});
 		
 		btnBorrarOlimpiada.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				cOlimpiada.deleteOlimpiada((Olimpiada) comboBox_Olimpiadas.getSelectedItem());
-				if (rdbtnSummer.isSelected())
-					cargarComboOlimpiadasVerano();
-				else
-					cargarComboOlimpiadasInvierno();
+				int reply = JOptionPane.showConfirmDialog(getContentPane(), "Seguro que quieres borrar la olimpiada?", "Borrar olimpiada", JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+					if(cOlimpiada.deleteOlimpiada((Olimpiada) comboBox_Olimpiadas.getSelectedItem())) {
+						JOptionPane.showMessageDialog(getContentPane(), "Olimpiada borrada correctamente");
+						if (rdbtnSummer.isSelected())
+							cargarComboOlimpiadasVerano();
+						else
+							cargarComboOlimpiadasInvierno();
+						
+						if (mdlOlimpiada.getSize()>0) {
+							cargarEventos();
+							cargarParticipaciones();
+						}
+						else {
+							mdlEvento.clear();
+							mdlPart.clear();
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(getContentPane(), "No se puede borrar, existen dependencias");
+					}	
 				
-				cargarEventos();
 				
+				
+			}
 			}
 		});
 		
@@ -415,7 +505,14 @@ public class Indice extends JFrame {
 				else
 					cargarComboOlimpiadasInvierno();
 				
-				cargarEventos();
+				if (mdlOlimpiada.getSize()>0) {
+					cargarEventos();
+					cargarParticipaciones();
+				}
+				else {
+					mdlEvento.clear();
+					mdlPart.clear();
+				}
 				
 			}
 		});
@@ -430,14 +527,50 @@ public class Indice extends JFrame {
 				else
 					cargarComboOlimpiadasInvierno();
 				
-				cargarEventos();
+				if (mdlOlimpiada.getSize()>0) {
+					cargarEventos();
+					cargarParticipaciones();
+				}
+				else {
+					mdlEvento.clear();
+					mdlPart.clear();
+				}
 			}
 		});
 		
 		btnBorrarEvento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cEvento.deleteEvento(list_Evento.getSelectedValue());
+				int reply = JOptionPane.showConfirmDialog(getContentPane(), "Seguro que quieres borrar el Evento?", "Borrar evento", JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+					if(cEvento.deleteEvento(list_Evento.getSelectedValue())) {
+						JOptionPane.showMessageDialog(getContentPane(), "Evento borrado correctamente");
+						cargarEventos();
+						if (mdlEvento.getSize()>0) {
+							cargarParticipaciones();
+						}else {
+							mdlPart.clear();
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(getContentPane(), "No se puede borrar el evento, existen dependencias");
+					}
+				} 	
+				
+				
+				
+			}
+		});
+		
+		btnEditarEvento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AlterEvento frame =new AlterEvento((Olimpiada) comboBox_Olimpiadas.getSelectedItem(), list_Evento.getSelectedValue());
+				frame.setVisible(true);
 				cargarEventos();
+				if (mdlEvento.getSize()>0) {
+					cargarParticipaciones();
+				}else {
+					mdlPart.clear();
+				}
 			}
 		});
 		
@@ -445,6 +578,11 @@ public class Indice extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				AlterEquipo frame = new AlterEquipo (false);
 				frame.setVisible(true);
+				
+				if(!cEquipo.selectEquipos().isEmpty())
+					mntmGestionar_equipo.setEnabled(true);
+				
+				cargarParticipaciones();
 			}
 		});
 		
@@ -452,6 +590,11 @@ public class Indice extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				AlterEquipo frame = new AlterEquipo(true);
 				frame.setVisible(true);
+				
+				if(cEquipo.selectEquipos().isEmpty())
+					mntmGestionar_equipo.setEnabled(false);
+				
+				cargarParticipaciones();
 			}
 		});
 		
@@ -459,6 +602,12 @@ public class Indice extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				AlterDeporte frame = new AlterDeporte(false);
 				frame.setVisible(true);
+				
+				
+				if(!cDeporte.selectDeportes().isEmpty())
+					mntmGestionar_Deporte.setEnabled(true);
+				
+				cargarParticipaciones();
 			}
 		});
 		
@@ -466,6 +615,64 @@ public class Indice extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				AlterDeporte frame = new AlterDeporte(true);
 				frame.setVisible(true);
+				if(cDeporte.selectDeportes().isEmpty())
+					mntmGestionar_Deporte.setEnabled(false);
+				
+				cargarEventos();
+			}
+		});
+		
+		mntmAniadir_deportista.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AlterDeportista frame= new AlterDeportista(false);
+				frame.setVisible(true);
+				
+				if(!cDeportista.selectDeportista().isEmpty())
+					mntmGestionar_deportista.setEnabled(true);
+			}
+		});
+		
+		mntmGestionar_deportista.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AlterDeportista frame = new AlterDeportista(true);
+				frame.setVisible(true);
+				
+				if(cDeportista.selectDeportista().isEmpty())
+					mntmGestionar_deportista.setEnabled(false);
+				
+				cargarParticipaciones();
+			}
+		});
+		
+		btnAniadir_Participacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AlterParticipacion frame = new AlterParticipacion(list_Evento.getSelectedValue());
+				frame.setVisible(true);
+				
+				cargarParticipaciones();
+			}
+		});
+		
+		btnEditar_Participacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AlterParticipacion frame = new AlterParticipacion(list_Evento.getSelectedValue(), list_Participaciones.getSelectedValue());
+				frame.setVisible(true);
+				
+				cargarParticipaciones();
+			}
+		});
+		btnBorrar_Participacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int reply = JOptionPane.showConfirmDialog(getContentPane(), "Seguro que quieres borrar la participacion?", "Borrar participacion", JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+					if(cParticipacion.borrarParticipacion((Participacion) list_Participaciones.getSelectedValue())) {
+						JOptionPane.showMessageDialog(getContentPane(), "Participacion borrada correctamente");
+						cargarParticipaciones();
+					}
+				} 
+				cParticipacion.borrarParticipacion(list_Participaciones.getSelectedValue());
+				
 			}
 		});
 		
@@ -474,7 +681,10 @@ public class Indice extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				cEvento.cerrarConexion();
 				cOlimpiada.cerrarConexion();
-				//cParticipacion.cerrarConexion();
+				cEquipo.cerrarConexion();
+				cDeporte.cerrarConexion();
+				cDeportista.cerrarConexion();
+				cParticipacion.cerrarConexion();
 			}
 		});
 		
@@ -486,10 +696,10 @@ public class Indice extends JFrame {
 	
 	private void cargarComboOlimpiadasVerano() {
 		ArrayList <Olimpiada> lstOlimp= cOlimpiada.selectOlimpiadasVerano();
-		DefaultComboBoxModel<Olimpiada> mdlOlimp= new DefaultComboBoxModel<Olimpiada>();
-		mdlOlimp.addAll(lstOlimp);
-		comboBox_Olimpiadas.setModel(mdlOlimp);
-		if (mdlOlimp.getSize() > 0) {
+		mdlOlimpiada= new DefaultComboBoxModel<Olimpiada>();
+		mdlOlimpiada.addAll(lstOlimp);
+		comboBox_Olimpiadas.setModel(mdlOlimpiada);
+		if (mdlOlimpiada.getSize() > 0) {
 			comboBox_Olimpiadas.setSelectedIndex(0);
 			btnEditarOlimpiada.setEnabled(true);
 			btnBorrarOlimpiada.setEnabled(true);
@@ -530,6 +740,22 @@ public class Indice extends JFrame {
 			btnEditarEvento.setEnabled(false);
 			btnBorrarEvento.setEnabled(false);
 		}
+	}
+	
+	private void cargarParticipaciones () {
+		ArrayList <Participacion> arrPart= cParticipacion.selectParticipacionesPorEvento(list_Evento.getSelectedValue());
+		mdlPart =new DefaultListModel<Participacion>();
+		mdlPart.addAll(arrPart);
+		list_Participaciones.setModel(mdlPart);
+		if (mdlPart.getSize()>0) {
+			list_Participaciones.setSelectedIndex(0);
+			btnEditar_Participacion.setEnabled(true);
+			btnBorrar_Participacion.setEnabled(true);
+		}else {
+			btnEditar_Participacion.setEnabled(false);
+			btnBorrar_Participacion.setEnabled(false);
+		}
+		
 	}
 
 }

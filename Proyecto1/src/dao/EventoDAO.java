@@ -75,15 +75,16 @@ public class EventoDAO {
 		}
 	}
 	
-	public void deleteEvento (Evento evento) {
+	public boolean deleteEvento (Evento evento) {
 		PreparedStatement ps;
 		try {
 			ps= cn.getConexion().prepareStatement("Delete from Evento where id_evento = ?");
 			ps.setInt(1, evento.getId_evento());
 			ps.executeUpdate();
 		}catch (SQLException e) {
-			System.out.println(e.getMessage());
+			return false;
 		}
+		return true;
 	}
 	
 	public void cerrarConexion() {

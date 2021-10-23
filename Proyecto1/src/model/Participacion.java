@@ -21,6 +21,43 @@ public class Participacion {
 		super();
 	}
 	
-	
+	public Deportista getDeportista() {
+		return deportista;
+	}
+
+	public Evento getEvento() {
+		return evento;
+	}
+
+	public Equipo getEquipo() {
+		return equipo;
+	}
+
+	public int getEdad() {
+		return edad;
+	}
+
+	public String getMedalla() {
+		return medalla;
+	}
+
+	@Override
+	public String toString() {
+		String str = deportista.getNombre() + " (" + equipo.getIniciales() + ") con edad: " + edad;
+		
+		if(medalla.equals("Gold")) 
+			str += ". Medalla: Oro";
+		
+		else if(medalla.equals("Silver")) 
+			str += ". Medalla: Plata";
+		
+		else if(medalla.equals("Bronze")) 
+			str += ". Medalla: Bronce";
+		
+		else
+			str += ". sin medalla";
+		
+		return str;
+	}
 	
 }

@@ -39,7 +39,11 @@ public class Deportista {
 	public int getAltura() {
 		return altura;
 	}
-	
+	@Override
+	public String toString() {
+		
+		return nombre;
+	}
 	
 
 }

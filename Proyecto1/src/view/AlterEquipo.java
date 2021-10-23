@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
@@ -42,7 +44,7 @@ public class AlterEquipo extends JDialog {
 	private JPanel panel_btn;
 	private JButton btnCerrar;
 	private JButton btnBorrar;
-	private boolean eliminando = false;
+	private boolean modificandoDatos = false;
 	private JButton btnAceptar;
 
 
@@ -55,13 +57,13 @@ public class AlterEquipo extends JDialog {
 		cEquipo =  new EquipoDAO();
 		
 		if (this.editar) {
-			setTitle("Editar Equipos");
+			
 			dibujarEditar();
 			cargarEquipos();
 			cargarTxtField();
 			gestionarEventos();
 		}else {
-			setTitle("Nuevo Equipo");
+			
 			dibujarNueva();
 			gestionarEventos();
 		}
@@ -72,6 +74,7 @@ public class AlterEquipo extends JDialog {
 	}
 
 	private void dibujarNueva() {
+		setTitle("Nuevo Equipo");
 		setResizable(false);
 		setModal(true);
 		setBounds(100, 100, 450, 182);
@@ -84,6 +87,7 @@ public class AlterEquipo extends JDialog {
 		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_contentPanel.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
+		contentPanel.setBackground(new Color(204, 255, 255));
 		{
 			JLabel lblNombre = new JLabel("Nombre: ");
 			GridBagConstraints gbc_lblNombre = new GridBagConstraints();
@@ -144,6 +148,7 @@ public class AlterEquipo extends JDialog {
 	}
 
 	private void dibujarEditar() {
+		setTitle("Editar Equipos");
 		setResizable(false);
 		setModal(true);
 		setBounds(100, 100, 689, 243);
@@ -178,6 +183,7 @@ public class AlterEquipo extends JDialog {
 			gbc_panel_btn.gridx = 1;
 			gbc_panel_btn.gridy = 2;
 			contentPanel.add(panel_btn, gbc_panel_btn);
+			contentPanel.setBackground(new Color(204, 255, 255));
 			{
 				btnActualizar = new JButton("");
 				panel_btn.add(btnActualizar);
@@ -201,11 +207,11 @@ public class AlterEquipo extends JDialog {
 			gbc_scrollPane.gridx = 0;
 			gbc_scrollPane.gridy = 0;
 			contentPanel.add(scrollPane, gbc_scrollPane);
+			contentPanel.setBackground(new Color(204, 255, 255));
 			{
 				list_Equipos = new JList();
 				
 				scrollPane.setViewportView(list_Equipos);
-				cargarEquipos();
 			}
 		}
 		{
@@ -255,7 +261,7 @@ public class AlterEquipo extends JDialog {
 			gbc_textField_Iniciales.gridy = 1;
 			contentPanel.add(textField_Iniciales, gbc_textField_Iniciales);
 			textField_Iniciales.setColumns(10);
-			cargarTxtField();
+
 		}
 		
 		
@@ -281,10 +287,9 @@ public class AlterEquipo extends JDialog {
 				
 				@Override
 				public void valueChanged(ListSelectionEvent e) {
-					if (!eliminando)
+					if (!modificandoDatos)
 						cargarTxtField();
-					
-					eliminando = false;
+					modificandoDatos = false;
 				}
 			});
 			
@@ -292,20 +297,32 @@ public class AlterEquipo extends JDialog {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					eliminando = true;
-					cEquipo.deleteEquipo(list_Equipos.getSelectedValue());
-					cargarEquipos();
-					cargarTxtField();
+					modificandoDatos = true;
+					int reply = JOptionPane.showConfirmDialog(getContentPane(), "Seguro que quieres borrar el equipo?", "Borrar equipo", JOptionPane.YES_NO_OPTION);
+					if (reply == JOptionPane.YES_OPTION) {
+					    if(cEquipo.deleteEquipo(list_Equipos.getSelectedValue())) {
+					    	JOptionPane.showMessageDialog(getContentPane(), "Equipo borrado correctamente");
+					    	cargarEquipos();
+					    }
+					    else {
+					    	JOptionPane.showMessageDialog(getContentPane(), "No se puede borrar, existen dependencias");
+					    }
+					}
+					
+					
 				}
 				
 			});
 			
 			btnActualizar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					Equipo equipo = new Equipo(idEquipo,textField_Nombre.getText() , textField_Iniciales.getText());
+					modificandoDatos=true;
+					idEquipo= list_Equipos.getSelectedValue().getId();
+					Equipo equipoNuevo = new Equipo(idEquipo, textField_Nombre.getText(), textField_Iniciales.getText());
 					
-					if (!cEquipo.existeEquipo(equipo)) {
-						cEquipo.updateEquipo(equipo);
+					
+					if (!cEquipo.existeEquipo(equipoNuevo)) {
+						cEquipo.updateEquipo(equipoNuevo);
 						cargarEquipos();
 					}
 					
@@ -317,7 +334,7 @@ public class AlterEquipo extends JDialog {
 			btnAceptar.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					Equipo equipoNuevo = new Equipo(idEquipo,textField_Nombre.getText() , textField_Iniciales.getText());
+					Equipo equipoNuevo = new Equipo(0,textField_Nombre.getText() , textField_Iniciales.getText());
 					
 					if (!cEquipo.existeEquipo(equipoNuevo)) {
 						cEquipo.insertEquipo(equipoNuevo);
@@ -341,10 +358,17 @@ public class AlterEquipo extends JDialog {
 			list_Equipos.setSelectedIndex(0);
 			btnActualizar.setEnabled(true);
 			btnBorrar.setEnabled(true);
+			textField_Iniciales.setEnabled(true);
+			textField_Nombre.setEnabled(true);
+			
 			
 		}else {
 			btnActualizar.setEnabled(false);
 			btnBorrar.setEnabled(false);
+			textField_Iniciales.setText("");
+			textField_Iniciales.setEnabled(false);
+			textField_Nombre.setText("");
+			textField_Nombre.setEnabled(false);
 		}
 			
 	}
