@@ -20,9 +20,8 @@ public class DeporteDAO {
 	public ArrayList<Deporte> selectDeportes() {
 		PreparedStatement ps;
 		ArrayList <Deporte> lstDeportes = new ArrayList <Deporte>();
-		
 		try {
-			ps=cn.getConexion().prepareStatement("select *  from Deporte");
+			ps=cn.getConexion().prepareStatement("select * from Deporte");
 			ResultSet rs= ps.executeQuery();
 			while (rs.next()) {
 				lstDeportes.add(new Deporte (rs.getInt(1), rs.getString(2)));
@@ -31,8 +30,6 @@ public class DeporteDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		return lstDeportes;
 	}
 	
@@ -41,6 +38,7 @@ public class DeporteDAO {
 		Deporte deporte = null;
 		try {
 			ps = cn.getConexion().prepareStatement("select * from Deporte where id_deporte = ?");
+			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				deporte = new Deporte (id, rs.getString(2));
@@ -81,6 +79,8 @@ public class DeporteDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 	public void cerrarConexion () {
 		cn.cerrarConexion();

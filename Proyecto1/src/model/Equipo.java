@@ -25,6 +25,10 @@ public class Equipo {
 		return iniciales;
 	}
 
-	
+	@Override
+	public String toString() {
+		
+		return nombre + " (" + iniciales + ")";
+	}
 	
 }

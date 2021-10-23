@@ -3,39 +3,48 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import dao.DeporteDAO;
+import dao.EventoDAO;
+import model.Deporte;
+import model.Evento;
+import model.Olimpiada;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
 import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;
 
 public class AlterEvento extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField_Nombre;
+	private Olimpiada olimpiada;
+	private DeporteDAO cDeporte;
+	private EventoDAO cEvento; 
+	private JComboBox<Deporte> comboBox_Deporte;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			AlterEvento dialog = new AlterEvento();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	/**
 	 * Create the dialog.
 	 */
-	public AlterEvento() {
+	public AlterEvento(Olimpiada olimpiada) {
+		cDeporte = new DeporteDAO();
+		cEvento = new EventoDAO();
+		
 		setTitle("Evento");
 		setResizable(false);
 		setModal(true);
@@ -78,27 +87,50 @@ public class AlterEvento extends JDialog {
 			contentPanel.add(lblDeporte, gbc_lblDeporte);
 		}
 		{
-			JComboBox comboBox_Equipo = new JComboBox();
-			GridBagConstraints gbc_comboBox_Equipo = new GridBagConstraints();
-			gbc_comboBox_Equipo.fill = GridBagConstraints.HORIZONTAL;
-			gbc_comboBox_Equipo.gridx = 1;
-			gbc_comboBox_Equipo.gridy = 1;
-			contentPanel.add(comboBox_Equipo, gbc_comboBox_Equipo);
+			DefaultComboBoxModel<Deporte> mdlDeporte = new DefaultComboBoxModel<Deporte>();
+			ArrayList <Deporte> lstDeporte = cDeporte.selectDeportes();
+			mdlDeporte.addAll(lstDeporte);
+			
+			comboBox_Deporte = new JComboBox();
+			comboBox_Deporte.setModel(mdlDeporte);
+			if (mdlDeporte.getSize() >0) {
+				comboBox_Deporte.setSelectedIndex(0);
+			}
+			
+			GridBagConstraints gbc_comboBox_Deporte = new GridBagConstraints();
+			gbc_comboBox_Deporte.fill = GridBagConstraints.HORIZONTAL;
+			gbc_comboBox_Deporte.gridx = 1;
+			gbc_comboBox_Deporte.gridy = 1;
+			contentPanel.add(comboBox_Deporte, gbc_comboBox_Deporte);
 		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Aceptar");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				JButton btnAceptar = new JButton("Aceptar");
+				btnAceptar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						Evento evento =  new Evento(0, textField_Nombre.getText(), olimpiada, (Deporte) comboBox_Deporte.getSelectedItem());
+						cEvento.insertEvento(evento);
+						dispose();
+					}
+				});
+				btnAceptar.setActionCommand("OK");
+				buttonPane.add(btnAceptar);
+				getRootPane().setDefaultButton(btnAceptar);
+				
 			}
 			{
-				JButton cancelButton = new JButton("Cancelar");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				JButton btnCancelar = new JButton("Cancelar");
+				btnCancelar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
+				
+				btnCancelar.setActionCommand("Cancel");
+				buttonPane.add(btnCancelar);
 			}
 		}
 	}

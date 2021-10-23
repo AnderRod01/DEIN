@@ -20,6 +20,8 @@ import javax.swing.border.EmptyBorder;
 
 import dao.OlimpiadaDAO;
 import model.Olimpiada;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AlterOlimpiada extends JDialog {
 
@@ -30,34 +32,53 @@ public class AlterOlimpiada extends JDialog {
 	private OlimpiadaDAO cOlimpiada;
 	private JButton btnAceptar, btnCancelar;
 	private JComboBox comboBox_Temporada;
+	private boolean editar;
+	private int idOlimpiada;
 	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			AlterOlimpiada dialog = new AlterOlimpiada();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	/**
 	 * Create the dialog.
 	 */
 	public AlterOlimpiada() {
-		setModal(true);
+		
+		setTitle("Nueva Olimpiada");
+		editar = false;
+		idOlimpiada=0;
 		
 		cOlimpiada =  new OlimpiadaDAO();
-		dibujar();
 		
+		
+		dibujar();
 		gestionarEventos();
 
 	}
 	
+	public AlterOlimpiada (Olimpiada olimpiada) {
+		cOlimpiada = new OlimpiadaDAO();
+		setTitle ("Editar Olimpiada");
+		editar =  true;
+		idOlimpiada= olimpiada.getId();
+		dibujar ();
+		
+		textField_Anio.setText(olimpiada.getAnio()+"");
+		textField_Ciudad.setText(olimpiada.getCiudad());
+		
+		if (olimpiada.getTemporada().equals("Summer"))
+			comboBox_Temporada.setSelectedIndex(0);
+		else
+			comboBox_Temporada.setSelectedIndex(1);
+		
+		
+		gestionarEventos();
+		
+	}
+	
 	private void dibujar () {
+		setModal(true);
 		setResizable(false);
 		setBounds(100, 100, 452, 210);
 		contentPane = new JPanel();
@@ -110,7 +131,7 @@ public class AlterOlimpiada extends JDialog {
 		gbc_lblTemporada.gridy = 1;
 		panel_lbl_txtfield.add(lblTemporada, gbc_lblTemporada);
 		
-		JComboBox comboBox_Temporada = new JComboBox();
+		comboBox_Temporada = new JComboBox();
 		comboBox_Temporada.setModel(new DefaultComboBoxModel(new String[] {"Summer", "Winter"}));
 		GridBagConstraints gbc_comboBox_Temporada = new GridBagConstraints();
 		gbc_comboBox_Temporada.insets = new Insets(0, 0, 5, 0);
@@ -150,6 +171,8 @@ public class AlterOlimpiada extends JDialog {
 		
 		panel_btn.add(btnCancelar);
 		
+		
+	
 	}
 	
 	private void gestionarEventos() {
@@ -157,22 +180,43 @@ public class AlterOlimpiada extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				
-				Olimpiada olimp =  new Olimpiada(0,
-						textField_Anio.getText() + " " + (String)comboBox_Temporada.getSelectedItem(), 
+				Olimpiada olimp =  new Olimpiada(idOlimpiada,
+						textField_Anio.getText() + " " + (String)comboBox_Temporada.getSelectedItem(),
 						Integer.parseInt(textField_Anio.getText()), 
 						(String) comboBox_Temporada.getSelectedItem(),
 						textField_Ciudad.getText());
 				
-				cOlimpiada.insertOlimpiada(olimp);
-				dispose();
+				if (!editar) {
+					if (!cOlimpiada.existeOlimpiada(olimp))
+						cOlimpiada.insertOlimpiada(olimp);
+				}
+				else {
+					if (!cOlimpiada.existeOlimpiada(olimp))
+						cOlimpiada.updateOlimpiada(olimp);
+					
+				}
+				
+				cerrar();
 			}
 		});
 		
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				dispose();
+				cerrar();
 			}
 		});
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				cerrar();
+			}
+		});
+	}
+	
+	private void cerrar() {
+		cOlimpiada.cerrarConexion();
+		setVisible(false);
 	}
 }

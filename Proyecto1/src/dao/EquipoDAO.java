@@ -10,6 +10,7 @@ import config.ConexionDB;
 import model.Deporte;
 import model.Deportista;
 import model.Equipo;
+import model.Olimpiada;
 
 public class EquipoDAO {
 
@@ -74,7 +75,7 @@ public class EquipoDAO {
 		Connection conexion = cn.getConexion();
 		
 		try {
-			ps= cn.getConexion().prepareStatement("update Equipo set nombre = ?, iniciaes = ? where id_equipo = ?");
+			ps= cn.getConexion().prepareStatement("update Equipo set nombre = ?, iniciales = ? where id_equipo = ?");
 			ps.setString(1, equipo.getNombre());
 			ps.setString(2, equipo.getIniciales());
 			ps.executeUpdate();
@@ -82,6 +83,38 @@ public class EquipoDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean existeEquipo (Equipo equipo) {
+		PreparedStatement ps;
+		try {
+			ps= cn.getConexion().prepareStatement("select * from Equipo where nombre = ? and iniciales = ?");
+			ps.setString(1, equipo.getNombre());
+			ps.setString(2, equipo.getIniciales());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void deleteEquipo (Equipo equipo)
+	{
+		PreparedStatement ps;
+		
+		
+		try {
+			ps=cn.getConexion().prepareStatement("delete from Equipo where id_Equipo = ?");
+			ps.setInt(1, equipo.getId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void cerrarConexion () {

@@ -31,6 +31,11 @@ public class Evento {
 		return deporte;
 	}
 
+	@Override
+	public String toString() {
+		return nombre + ": " + deporte;
+	}
+
 	
 	
 }

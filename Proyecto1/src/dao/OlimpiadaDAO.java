@@ -71,6 +71,23 @@ public class OlimpiadaDAO {
 		return lstOlimpiadas;
 	}
 	
+	public boolean existeOlimpiada(Olimpiada olimp) {
+		PreparedStatement ps;
+		try {
+			ps = cn.getConexion().prepareStatement("select * from Olimpiada where anio = ? and ciudad = ? and temporada = ?");
+			ps.setInt(1, olimp.getAnio());
+			ps.setString(2, olimp.getCiudad());
+			ps.setString(3, olimp.getTemporada());
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			return true;
+		}	
+		return false;
+	}
+	
 	public void insertOlimpiada (Olimpiada olimpiada) {
 		
 		PreparedStatement ps;
