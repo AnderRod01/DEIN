@@ -1,4 +1,4 @@
-conexion atributo inicializar en el constructor
+aaaaconexion atributo inicializar en el constructor
 
 para hacer una query:
 	PreparedStatement ps
