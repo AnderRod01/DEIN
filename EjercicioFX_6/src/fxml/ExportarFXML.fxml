@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<GridPane prefHeight="232.0" prefWidth="495.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="controllers.ExportarFXMLController">
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
+   </rowConstraints>
+   <children>
+      <Label text="Escribe el nombre del fichero:">
+         <GridPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </GridPane.margin>
+      </Label>
+      <Button fx:id="btnAceptar" mnemonicParsing="false" onAction="#aceptar" text="Aceptar" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets bottom="20.0" left="20.0" />
+         </GridPane.margin>
+      </Button>
+      <TextField fx:id="txtFichero" GridPane.columnIndex="1">
+         <GridPane.margin>
+            <Insets bottom="20.0" right="20.0" top="20.0" />
+         </GridPane.margin>
+      </TextField>
+      <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets bottom="20.0" left="20.0" />
+         </GridPane.margin>
+      </Button>
+   </children>
+</GridPane>
