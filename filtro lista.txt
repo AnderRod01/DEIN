@@ -1,0 +1,11 @@
+ObservableList<Persona> datos = FXCollections.observableArrayList();
+FilteredList<Persona> datosFiltrados = new FilteredList<Persona>(datos);
+
+tabla.setItems(datosFiltrados);
+
+Y luego en el listener del textfield:
+datosFiltrados.setPredicate(new Predicate<Persona>() {
+     public boolean test(Persona p) {
+          if(p.getNombre).contains(textFiltar.getText)) return true;
+          else return false;
+}});
