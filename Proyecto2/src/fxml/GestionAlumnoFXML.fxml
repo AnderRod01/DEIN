@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<GridPane prefHeight="317.0" prefWidth="432.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17">
+   <children>
+      <Label text="DNI" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Nombre" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Primer Apellido" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Segundo Apellido" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="txtFieldDni" GridPane.columnIndex="1">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </TextField>
+      <TextField fx:id="txtFieldNombre" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </TextField>
+      <TextField fx:id="txtFieldApellido1" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </TextField>
+      <TextField fx:id="txtFieldApellido2" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </TextField>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="35.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+         <children>
+            <Button fx:id="btnAceptar" mnemonicParsing="false" text="Aceptar" />
+            <Button fx:id="btnCancelar" mnemonicParsing="false" text="Cancelar" />
+         </children>
+      </HBox>
+   </children>
+   <rowConstraints>
+      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <columnConstraints>
+      <ColumnConstraints maxWidth="153.0" minWidth="135.0" prefWidth="153.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="304.0" />
+   </columnConstraints>
+</GridPane>

@@ -1,0 +1,40 @@
+#fondo{
+	-fx-background-color:#00ff91 ;
+}
+
+.botones{
+	-fx-background-color: #ff94d8;
+}
+
+.table-view {
+	-fx-control-inner-background: transparent;
+	-fx-background-color: transparent;
+	-fx-table-cell-border-color: transparent;
+	-fx-table-header-border-color: transparent;
+	-fx-background-image:url(../../resources/fondoTabla.jpg);
+	-fx-background-size: 100%, 100%;
+	-fx-padding: 5.0;
+}
+
+.table-view .column-header-background {
+	-fx-background-color: transparent;
+}
+
+.table-view .column-header, .table-view .filler {
+	-fx-border-width: 0.0 0.0 1.0 0.0;
+	-fx-background-color: transparent;
+	-fx-border-color: transparent transparent derive(-fx-base, 80.0%)
+		transparent;
+	-fx-border-insets: 0.0 10.0 1.0 0.0;
+	
+}
+
+.table-view .column-header .label {
+	-fx-font-size: 20px;
+	-fx-alignment: center-left;
+	-fx-color: black;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+	-fx-background-color: -fx-focus-color;
+}
