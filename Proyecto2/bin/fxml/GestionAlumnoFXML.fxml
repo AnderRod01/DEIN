@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<GridPane prefHeight="317.0" prefWidth="432.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17">
+<GridPane prefHeight="317.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GestionAlumnoFXMLController">
    <children>
       <Label text="DNI" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
          <GridPane.margin>
@@ -54,8 +53,8 @@
       </TextField>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="35.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
          <children>
-            <Button fx:id="btnAceptar" mnemonicParsing="false" text="Aceptar" />
-            <Button fx:id="btnCancelar" mnemonicParsing="false" text="Cancelar" />
+            <Button fx:id="btnAceptar" mnemonicParsing="false" onAction="#aceptar" text="Aceptar" />
+            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
          </children>
       </HBox>
    </children>
