@@ -20,7 +20,7 @@ public class AlumnoDAO {
 		
 		ArrayList<Alumno> lstAlumno = new ArrayList<Alumno>();
 		try {
-			ps= cn.getConexion().prepareStatement("select * from Libro");
+			ps= cn.getConexion().prepareStatement("select * from Alumno");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				lstAlumno.add(new Alumno(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));

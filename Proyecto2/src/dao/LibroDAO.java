@@ -36,13 +36,15 @@ public class LibroDAO {
 	public void insertLibro (Libro libro) {
 		PreparedStatement ps;
 		try {
-			ps = cn.getConexion().prepareStatement("insert into Libro (codigo, titulo, autor, editorial, estado) values (?,?,?,?,?)");
+			ps = cn.getConexion().prepareStatement("insert into Libro (codigo, titulo, autor, editorial, estado, baja) values (?,?,?,?,?,?)");
 			ps.setInt(1, libro.getCodigo());
 			ps.setString(2, libro.getTitulo());
 			ps.setString(3, libro.getAutor());
 			ps.setString(4, libro.getEditorial());
 			ps.setString(5, libro.getEstado());
+			ps.setInt(6, libro.getBaja());
 			
+			ps.executeUpdate();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -61,6 +63,8 @@ public class LibroDAO {
 			ps.setString(4, libro.getEditorial());
 			ps.setString(5, libro.getEstado());
 			ps.setInt(6, cod);
+			
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,6 +83,8 @@ public class LibroDAO {
 		try {
 			ps = cn.getConexion().prepareStatement("update Libro set Baja = ?");
 			ps.setInt(1, lib.getBaja());
+			
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
