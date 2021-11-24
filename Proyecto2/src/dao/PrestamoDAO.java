@@ -3,6 +3,7 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import config.ConexionDB;
@@ -31,11 +32,12 @@ public class PrestamoDAO {
 			while (rs.next()) {
 				Alumno alum = cAlumno.selectAlumnoPorDni(rs.getString(2));
 				Libro lib = cLibro.selectLibroPorCod (rs.getInt(3));
+				lstPrest.add(new Prestamo(rs.getInt(1), alum, lib,rs.getObject(4, LocalDate.class)));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return lstPrest;
 	}
 }

@@ -99,7 +99,7 @@
                     <items>
                       <MenuItem fx:id="menuCrearLibro" mnemonicParsing="false" onAction="#crearLibro" text="Crear" />
                         <MenuItem fx:id="menuEditarLibro" mnemonicParsing="false" onAction="#editarLibro" text="Editar" />
-                        <MenuItem fx:id="menuBorrarLibro" mnemonicParsing="false" onAction="#borrarLibro" text="Cambiar Baja" />
+                        <MenuItem fx:id="menuBorrarLibro" mnemonicParsing="false" onAction="#borrarLibro" text="Dar de Baja" />
                     </items>
                   </ContextMenu>
                </contextMenu>
@@ -108,7 +108,7 @@
                <children>
                   <Button fx:id="btnCrearLibro" mnemonicParsing="false" onAction="#crearLibroBtn" text="Crear" />
                   <Button fx:id="btnEditarLibro" mnemonicParsing="false" onAction="#editarLibroBtn" text="Editar" />
-                  <Button fx:id="btnBorrarLibro" mnemonicParsing="false" onAction="#borrarLibroBtn" text="Cambiar Baja" />
+                  <Button fx:id="btnBorrarLibro" mnemonicParsing="false" onAction="#borrarLibroBtn" text="Dar de Baja" />
                </children>
             </HBox>
             <CheckBox fx:id="chkBoxDisponible" mnemonicParsing="false" onAction="#cargarTodos" selected="true" text="Solo Libros Disponibles" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
