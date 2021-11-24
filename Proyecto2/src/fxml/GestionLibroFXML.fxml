@@ -9,15 +9,14 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<GridPane prefHeight="407.0" prefWidth="394.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="controllers.GestionLibroFXMLController">
+<GridPane prefHeight="407.0" prefWidth="394.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GestionLibroFXMLController">
    <children>
-      <TextField fx:id="txtTitulo" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <TextField fx:id="txtCodigo" GridPane.columnIndex="1">
          <GridPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtCodigo" GridPane.columnIndex="1">
+      <TextField fx:id="txtTitulo" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </GridPane.margin>
@@ -71,7 +70,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btnAceptar" mnemonicParsing="false" onAction="#aceptar" text="Aceptar" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="btnAceptar" defaultButton="true" mnemonicParsing="false" onAction="#aceptar" text="Aceptar" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>
       </GridPane>

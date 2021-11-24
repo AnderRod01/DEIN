@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.TextField;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 import model.Libro;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import dao.LibroDAO;
@@ -20,9 +22,9 @@ import javafx.scene.control.ComboBox;
 
 public class GestionLibroFXMLController implements Initializable{
 	@FXML
-	private TextField txtTitulo;
-	@FXML
 	private TextField txtCodigo;
+	@FXML
+	private TextField txtTitulo;
 	@FXML
 	private TextField txtAutor;
 	@FXML
@@ -41,18 +43,21 @@ public class GestionLibroFXMLController implements Initializable{
 	// Event Listener on Button[#btnAceptar].onAction
 	@FXML
 	public void aceptar(ActionEvent event) {
-		String titulo = txtTitulo.getText();
-		String autor = txtAutor.getText();
-		String editorial = txtEditorial.getText();
-		int codigo = Integer.parseInt(txtCodigo.getText());
-		String estado = cmbBoxEstado.getSelectionModel().getSelectedItem();
+
+			String titulo = txtTitulo.getText();
+			String autor = txtAutor.getText();
+			String editorial = txtEditorial.getText();
+			int codigo = Integer.parseInt(txtCodigo.getText());
+			String estado = cmbBoxEstado.getSelectionModel().getSelectedItem();
+			
+			l = new Libro (codigo,titulo, autor, editorial, estado,0);
+			
+			
 		
-		l = new Libro (codigo,titulo, autor, editorial, estado,0);
+			Stage myStage =(Stage) this.btnCancelar.getScene().getWindow();
+			myStage.close();
 		
-		//HAY QUE PROPAGAR EXCEPCION
-		cLibro.insertLibro(l);
-		Stage myStage =(Stage) this.btnCancelar.getScene().getWindow();
-		myStage.close();
+		
 	}
 	// Event Listener on Button[#btnCancelar].onAction
 	@FXML
@@ -68,6 +73,7 @@ public class GestionLibroFXMLController implements Initializable{
 		txtAutor.setText(l.getAutor());
 		txtEditorial.setText(l.getEditorial());
 		cmbBoxEstado.getSelectionModel().select(l.getEstado());
+
 	}
 	
 	public Libro getLibro () {
@@ -77,6 +83,7 @@ public class GestionLibroFXMLController implements Initializable{
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
 		data = FXCollections.observableArrayList();
 		data.addAll("Nuevo","Usado nuevo", "Usado seminuevo", "Usado estropeado", "Restaurado");
 		cmbBoxEstado.setItems(data);

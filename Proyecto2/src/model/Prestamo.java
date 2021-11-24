@@ -4,15 +4,16 @@ import java.time.LocalDate;
 
 
 public class Prestamo {
-	private int id_prestamo, codigo_libro;
-	private String dni_alumno;
+	private int id_prestamo;
+	private Libro lib;
+	private Alumno alum;
 	private LocalDate fecha_prestamo;
 	
-	public Prestamo(int id_prestamo, int codigo_libro, String dni_alumno, LocalDate fecha_prestamo) {
+	public Prestamo(int id_prestamo, Alumno alum, Libro lib, LocalDate fecha_prestamo) {
 		super();
 		this.id_prestamo = id_prestamo;
-		this.codigo_libro = codigo_libro;
-		this.dni_alumno = dni_alumno;
+		this.alum = alum;
+		this.lib = lib;
 		this.fecha_prestamo = fecha_prestamo;
 	}
 	
@@ -24,22 +25,23 @@ public class Prestamo {
 		this.id_prestamo = id_prestamo;
 	}
 	
-	public int getCodigo_libro() {
-		return codigo_libro;
-	}
 	
-	public void setCodigo_libro(int codigo_libro) {
-		this.codigo_libro = codigo_libro;
+	public Libro getLib() {
+		return lib;
 	}
-	
-	public String getDni_alumno() {
-		return dni_alumno;
+
+	public void setLib(Libro lib) {
+		this.lib = lib;
 	}
-	
-	public void setDni_alumno(String dni_alumno) {
-		this.dni_alumno = dni_alumno;
+
+	public Alumno getAlum() {
+		return alum;
 	}
-	
+
+	public void setAlum(Alumno alum) {
+		this.alum = alum;
+	}
+
 	public LocalDate getFecha_prestamo() {
 		return fecha_prestamo;
 	}
@@ -50,7 +52,7 @@ public class Prestamo {
 	
 	@Override
 	public String toString() {
-		return "Prestamo [id_prestamo=" + id_prestamo + ", codigo_libro=" + codigo_libro + ", dni_alumno=" + dni_alumno
+		return "Prestamo [id_prestamo=" + id_prestamo + ", codigo_libro=" + lib.getCodigo() + ", dni_alumno=" + alum.getDni()
 				+ ", fecha_prestamo=" + fecha_prestamo + "]";
 	}
 	
