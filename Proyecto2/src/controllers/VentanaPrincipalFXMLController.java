@@ -14,11 +14,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import dao.AlumnoDAO;
 import dao.LibroDAO;
+import dao.PrestamoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -34,6 +36,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Alumno;
 import model.Libro;
+import model.Prestamo;
 import javafx.scene.control.TableView;
 
 import javafx.scene.control.TableColumn;
@@ -101,6 +104,8 @@ public class VentanaPrincipalFXMLController implements Initializable{
 	
 	private Alumno a;
 	private AlumnoDAO cAlumno;
+	
+	private PrestamoDAO cPrestamo;
 
 	// Event Listener on Button[#btnCrearAlumno].onAction
 	@FXML
@@ -120,18 +125,11 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			stage.showAndWait();
 			
 			a = controller.getAlumno();
-			
-			try {
-				cAlumno.insertAlumno(a);
+			if (a!= null) {
 				dataAlumno.add(a);
-			} catch (SQLException e) {
-				Alert alert= new Alert(Alert.AlertType.ERROR);
-				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
-				alert.setHeaderText(null);
-				alert.setTitle("ERROR");
-				alert.setContentText("Ha ocurrido un error en la creacion del alumno");
-				alert.showAndWait();
 			}
+			
+
 		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -158,21 +156,14 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			stage.setTitle("Actualizar Libro");
 			stage.showAndWait();
 			
-			String dniAntiguo = a.getDni();
 			
 			a = controller.getAlumno();
 			
-			try {
-				cAlumno.updateAlumno(a, dniAntiguo);
+			if (a!=null) {
 				dataAlumno.set(iSeleccionadoAlumno, a);
-			} catch (SQLException e) {
-				Alert alert= new Alert(Alert.AlertType.ERROR);
-				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
-				alert.setHeaderText(null);
-				alert.setTitle("ERROR");
-				alert.setContentText("Ha ocurrido un error en la actualizacion del alumno");
-				alert.showAndWait();
 			}
+			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -229,23 +220,18 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			
 			a = controller.getAlumno();
 			
-			try {
-				cAlumno.insertAlumno(a);
+			if (a!=null) {
 				dataAlumno.add(a);
-			} catch (SQLException e) {
-				Alert alert= new Alert(Alert.AlertType.ERROR);
-				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
-				alert.setHeaderText(null);
-				alert.setTitle("ERROR");
-				alert.setContentText("Ha ocurrido un error en la creacion del alumno");
-				alert.showAndWait();
 			}
+			
+			
 		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 	// Event Listener on MenuItem[#menuEditarAlumno].onAction
 	@FXML
 	public void editarAlumno(ActionEvent event) {
@@ -264,21 +250,13 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			stage.setTitle("Actualizar Libro");
 			stage.showAndWait();
 			
-			String dniAntiguo = a.getDni();
 			
 			a = controller.getAlumno();
-			
-			try {
-				cAlumno.updateAlumno(a, dniAntiguo);
+			if (a!=null) {
 				dataAlumno.set(iSeleccionadoAlumno, a);
-			} catch (SQLException e) {
-				Alert alert= new Alert(Alert.AlertType.ERROR);
-				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
-				alert.setHeaderText(null);
-				alert.setTitle("ERROR");
-				alert.setContentText("Ha ocurrido un error en la actualizacion del alumno");
-				alert.showAndWait();
 			}
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -335,17 +313,11 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			
 			l = controller.getLibro();
 			
-			try {
-				cLibro.insertLibro(l);
+			if (l!=null) {
 				dataLibro.add(l);
-			} catch (SQLException e) {
-				Alert alert= new Alert(Alert.AlertType.ERROR);
-				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
-				alert.setHeaderText(null);
-				alert.setTitle("ERROR");
-				alert.setContentText("Ha ocurrido un error en la creacion del libro");
-				alert.showAndWait();
 			}
+			
+
 		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -371,21 +343,16 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			stage.setTitle("Actualizar Libro");
 			stage.showAndWait();
 			
-			int codigoAntiguo = l.getCodigo();
+
 			
 			l = controller.getLibro();
 			
-			try {
-				cLibro.updateLibro(l, codigoAntiguo);
+			if(l!=null) {
 				dataLibro.set(iSeleccionadoLibro, l);
-			} catch (SQLException e) {
-				Alert alert= new Alert(Alert.AlertType.ERROR);
-				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
-				alert.setHeaderText(null);
-				alert.setTitle("ERROR");
-				alert.setContentText("Ha ocurrido un error en la actualizacion del libro");
-				alert.showAndWait();
 			}
+			
+
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -421,18 +388,12 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			stage.showAndWait();
 		
 			l = controller.getLibro();
-			
-			try {
-				cLibro.insertLibro(l);
+
+			if (l!=null) {
 				dataLibro.add(l);
-			} catch (SQLException e) {
-				Alert alert= new Alert(Alert.AlertType.ERROR);
-				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
-				alert.setHeaderText(null);
-				alert.setTitle("ERROR");
-				alert.setContentText("Ha ocurrido un error en la creacion del libro");
-				alert.showAndWait();
 			}
+			
+
 			
 			
 		} catch (IOException e) {
@@ -458,21 +419,15 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			stage.setTitle("Actualizar Libro");
 			stage.showAndWait();
 		
-			int codigoAntiguo = l.getCodigo();
+
 			
 			l = controller.getLibro();
-			
-			try {
-				cLibro.updateLibro(l, codigoAntiguo);
+
+			if (l!=null) {
 				dataLibro.set(iSeleccionadoLibro, l);
-			} catch (SQLException e) {
-				Alert alert= new Alert(Alert.AlertType.ERROR);
-				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
-				alert.setHeaderText(null);
-				alert.setTitle("ERROR");
-				alert.setContentText("Ha ocurrido un error en la actualizacion del libro");
-				alert.showAndWait();
 			}
+			
+
 			
 			
 			
@@ -516,7 +471,22 @@ public class VentanaPrincipalFXMLController implements Initializable{
 	@FXML
 	public void realizarPrestamo(ActionEvent event) {
 		if (iSeleccionadoAlumno != -1 && iSeleccionadoLibro != -1) {
+			l = tblLibro.getSelectionModel().getSelectedItem();
+			a = lstAlumno.getSelectionModel().getSelectedItem();
 			
+			LocalDate date = LocalDate.now();
+			Prestamo p = new Prestamo(0, a, l, date);
+			
+			try {
+				cPrestamo.insertPrestamo(p);
+			} catch (SQLException e) {
+				Alert alert= new Alert(Alert.AlertType.ERROR);
+				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
+				alert.setHeaderText(null);
+				alert.setTitle("ERROR");
+				alert.setContentText("Ha ocurrido un error en la realizacion del prestamo");
+				alert.showAndWait();
+			}
 		}
 	}
 	// Event Listener on MenuItem[#menuGestionarPrestamo].onAction
@@ -539,6 +509,8 @@ public class VentanaPrincipalFXMLController implements Initializable{
 		tblLibro.setItems(dataLibro);
 		cAlumno = new AlumnoDAO();
 		cLibro = new LibroDAO();
+		cPrestamo = new PrestamoDAO();
+		
 		
 		
 		cargarLibrosDisponibles();

@@ -40,4 +40,14 @@ public class PrestamoDAO {
 		}
 		return lstPrest;
 	}
+	
+	public void insertPrestamo (Prestamo p) throws SQLException {
+		PreparedStatement ps;
+		ps = cn.getConexion().prepareStatement("insert into Prestamo (dni_alumno, codigo_libro, fecha_prestamo) values (?,?,?)");
+		ps.setString(1, p.getAlum().getDni());
+		ps.setInt(2, p.getLib().getCodigo());
+		ps.setObject(3, p.getFecha_prestamo());
+		
+		ps.executeUpdate();
+	}
 }

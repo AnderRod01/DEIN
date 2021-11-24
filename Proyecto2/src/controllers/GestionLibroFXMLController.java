@@ -43,17 +43,44 @@ public class GestionLibroFXMLController implements Initializable{
 	// Event Listener on Button[#btnAceptar].onAction
 	@FXML
 	public void aceptar(ActionEvent event) {
-
+				
+			
 			String titulo = txtTitulo.getText();
 			String autor = txtAutor.getText();
 			String editorial = txtEditorial.getText();
 			int codigo = Integer.parseInt(txtCodigo.getText());
 			String estado = cmbBoxEstado.getSelectionModel().getSelectedItem();
 			
-			l = new Libro (codigo,titulo, autor, editorial, estado,0);
+			if (l!= null) {
+				int codigoAntiguo = l.getCodigo();
+				l = new Libro (codigo,titulo, autor, editorial, estado,0);
+				
+				try {
+					cLibro.updateLibro(l, codigoAntiguo);
+				} catch (SQLException e) {
+					Alert alert= new Alert(Alert.AlertType.ERROR);
+					alert.initOwner(this.btnCancelar.getScene().getWindow());
+					alert.setHeaderText(null);
+					alert.setTitle("ERROR");
+					alert.setContentText("Ha ocurrido un error en la actualizacion del libro");
+					alert.showAndWait();
+				}
+				
+			}else {
+				l = new Libro (codigo,titulo, autor, editorial, estado,0);
+				
+				try {
+					cLibro.insertLibro(l);
+				} catch (SQLException e) {
+					Alert alert= new Alert(Alert.AlertType.ERROR);
+					alert.initOwner(this.btnCancelar.getScene().getWindow());
+					alert.setHeaderText(null);
+					alert.setTitle("ERROR");
+					alert.setContentText("Ha ocurrido un error en la creacion del libro");
+					alert.showAndWait();
+				}
+			}
 			
-			
-		
 			Stage myStage =(Stage) this.btnCancelar.getScene().getWindow();
 			myStage.close();
 		
