@@ -43,7 +43,7 @@ public class GestionLibroFXMLController implements Initializable{
 	// Event Listener on Button[#btnAceptar].onAction
 	@FXML
 	public void aceptar(ActionEvent event) {
-				
+			cLibro = new LibroDAO();
 			
 			String titulo = txtTitulo.getText();
 			String autor = txtAutor.getText();

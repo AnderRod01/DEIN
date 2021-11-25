@@ -52,8 +52,8 @@ public class Prestamo {
 	
 	@Override
 	public String toString() {
-		return "Prestamo [id_prestamo=" + id_prestamo + ", codigo_libro=" + lib.getCodigo() + ", dni_alumno=" + alum.getDni()
-				+ ", fecha_prestamo=" + fecha_prestamo + "]";
+		return "(" + id_prestamo + ") " + alum.getDni() + " -> " + lib.getCodigo()
+				+ ", desde " + fecha_prestamo;
 	}
 	
 	

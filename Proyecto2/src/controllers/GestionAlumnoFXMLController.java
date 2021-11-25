@@ -34,6 +34,7 @@ public class GestionAlumnoFXMLController {
 	// Event Listener on Button[#btnAceptar].onAction
 	@FXML
 	public void aceptar(ActionEvent event) {
+		cAlumno = new AlumnoDAO();
 
 		String dni = txtFieldDni.getText();
 		String nombre = txtFieldNombre.getText();

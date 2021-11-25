@@ -50,4 +50,14 @@ public class PrestamoDAO {
 		
 		ps.executeUpdate();
 	}
+	
+	public void deletePrestamo (Prestamo p) throws SQLException {
+		PreparedStatement ps;
+		ps = cn.getConexion().prepareStatement("delete from Prestamo where id_prestamo = ?");
+		ps.setInt(1, p.getId_prestamo());
+		
+		ps.executeUpdate();
+	}
+	
+	
 }

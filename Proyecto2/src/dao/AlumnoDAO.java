@@ -38,7 +38,8 @@ public class AlumnoDAO {
 		
 		Alumno alum = null;
 		try {
-			ps= cn.getConexion().prepareStatement("select dni, nombre, apellido1, apellido2 from Alumno where ");
+			ps= cn.getConexion().prepareStatement("select dni, nombre, apellido1, apellido2 from Alumno where dni = ?");
+			ps.setString(1, dni);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				alum =new Alumno(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
