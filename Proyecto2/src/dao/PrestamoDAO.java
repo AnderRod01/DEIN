@@ -41,6 +41,26 @@ public class PrestamoDAO {
 		return lstPrest;
 	}
 	
+	public ArrayList<Prestamo> selectPrestamosPorAlumno (Alumno a){
+		PreparedStatement ps;
+		ArrayList<Prestamo> lstPrest = new ArrayList<Prestamo>();
+		
+		try {
+			ps = cn.getConexion().prepareStatement("select id_prestamo, dni_alumno, codigo_libro, fecha_prestamo from Prestamo where dni_alumno = ?");
+			ps.setString(1, a.getDni());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Alumno alum = cAlumno.selectAlumnoPorDni(rs.getString(2));
+				Libro lib = cLibro.selectLibroPorCod (rs.getInt(3));
+				lstPrest.add(new Prestamo(rs.getInt(1), alum, lib,rs.getObject(4, LocalDate.class)));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lstPrest;
+	}
+	
 	public void insertPrestamo (Prestamo p) throws SQLException {
 		PreparedStatement ps;
 		ps = cn.getConexion().prepareStatement("insert into Prestamo (dni_alumno, codigo_libro, fecha_prestamo) values (?,?,?)");
@@ -58,6 +78,8 @@ public class PrestamoDAO {
 		
 		ps.executeUpdate();
 	}
+	
+	
 	
 	
 }

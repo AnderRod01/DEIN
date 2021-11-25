@@ -205,6 +205,12 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			menuEditarAlumno.setDisable(false);
 			iSeleccionadoAlumno = lstAlumno.getSelectionModel().getSelectedIndex();
 			a = lstAlumno.getSelectionModel().getSelectedItem();
+			
+			if (tblLibro.getSelectionModel().getSelectedItem() != null) {
+				btnPrestar.setDisable(false);
+			}else {
+				btnPrestar.setDisable(true);
+			}
 		}
 	}
 	// Event Listener on MenuItem[#menuCrearAlumno].onAction
@@ -303,6 +309,12 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			menuBorrarLibro.setDisable(false);
 			iSeleccionadoLibro = tblLibro.getSelectionModel().getSelectedIndex();
 			l = tblLibro.getSelectionModel().getSelectedItem();
+			
+			if (lstAlumno.getSelectionModel().getSelectedItem() != null) {
+				btnPrestar.setDisable(false);
+			}else {
+				btnPrestar.setDisable(true);
+			}
 		}
 	}
 	// Event Listener on MenuItem[#menuCrearLibro].onAction
@@ -612,6 +624,7 @@ public class VentanaPrincipalFXMLController implements Initializable{
 		
 		menuEditarAlumno.setDisable(true);
 		menuBorrarAlumno.setDisable(true);
+		btnPrestar.setDisable(true);
 		
 		
 		
@@ -632,7 +645,7 @@ public class VentanaPrincipalFXMLController implements Initializable{
 		
 		menuBorrarLibro.setDisable(true);
 		menuEditarLibro.setDisable(true);
-		
+		btnPrestar.setDisable(true);
 		
 		
 		ArrayList<Libro> listaLibros = cLibro.selectLibrosDisponibles();
