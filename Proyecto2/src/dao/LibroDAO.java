@@ -34,24 +34,6 @@ public class LibroDAO {
 		return lstLibros;
 	}
 	
-	public ArrayList<Libro> selectLibros (){
-		PreparedStatement ps;
-		ArrayList<Libro> lstLibros = new ArrayList<Libro>();
-		
-		try {
-			ps= cn.getConexion().prepareStatement("select codigo, titulo, autor, editorial, estado, baja from Libro where baja = 0");
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				lstLibros.add(new Libro(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),  rs.getInt(6)));
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return lstLibros;
-	}
-	
 	public Libro selectLibroPorCod (int codigo) {
 		PreparedStatement ps;
 		Libro l= null;

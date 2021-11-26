@@ -8,15 +8,14 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<GridPane prefHeight="178.0" prefWidth="335.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="controllers.GestionPrestamosFXMLController">
+<GridPane prefHeight="178.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GestionPrestamosFXMLController">
    <children>
       <ComboBox fx:id="cmbBoxLibro" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES">
          <GridPane.margin>
             <Insets left="15.0" right="15.0" />
          </GridPane.margin>
       </ComboBox>
-      <ComboBox fx:id="cmbBoxAlumno" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <ComboBox fx:id="cmbBoxAlumno" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="15.0" right="15.0" />
          </GridPane.margin>
@@ -51,7 +50,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="99.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="236.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="78.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" prefWidth="321.0" />
    </columnConstraints>
 </GridPane>

@@ -64,8 +64,7 @@ public class Libro {
 	
 	@Override
 	public String toString() {
-		return "Libro [titulo=" + titulo + ", autor=" + autor + ", editorial=" + editorial + ", estado=" + estado
-				+ ", codigo=" + codigo + ", baja=" + baja + "]";
+		return "(" + codigo + ") " + titulo;
 	}
 	
 	

@@ -7,10 +7,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import config.ConexionDB;
-import model.Alumno;
 import model.Historico;
-import model.Libro;
-import model.Prestamo;
+
 
 public class HistoricoDAO {
 	private ConexionDB cn;
@@ -40,7 +38,8 @@ public class HistoricoDAO {
 	
 	public void insertHistorico (Historico h) throws SQLException {
 		PreparedStatement ps;
-		ps = cn.getConexion().prepareStatement("insert into Historico (id_prestamo, dni_alumno, codigo_libro, fecha_prestamo, fecha_devolucion) values (?,?,?,?,?)");
+		
+		ps = cn.getConexion().prepareStatement("insert into Historico_prestamo (id_prestamo, dni_alumno, codigo_libro, fecha_prestamo, fecha_devolucion) values (?,?,?,?,?)");
 		ps.setInt(1, h.getId_prestamo());
 		ps.setString(2, h.getDni_alumno());
 		ps.setInt(3, h.getCodigo_libro());
@@ -48,5 +47,7 @@ public class HistoricoDAO {
 		ps.setObject(5, h.getFecha_devolucion());
 		
 		ps.executeUpdate();
+		
+		
 	}
 }
