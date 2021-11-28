@@ -16,8 +16,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<GridPane prefHeight="553.0" prefWidth="1173.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.VentanaPrincipalFXMLController">
+<GridPane id="GridPane" prefHeight="553.0" prefWidth="1173.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.VentanaPrincipalFXMLController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -30,8 +31,9 @@
    <children>
       <GridPane minWidth="450.0" prefHeight="399.0" prefWidth="450.0" GridPane.halignment="LEFT" GridPane.rowIndex="1">
         <columnConstraints>
+          <ColumnConstraints />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="70.0" minHeight="4.0" prefHeight="35.0" vgrow="SOMETIMES" />
@@ -39,26 +41,29 @@
           <RowConstraints minHeight="10.0" prefHeight="324.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label id="alumno" text="Alumno" GridPane.valignment="CENTER">
+            <Label id="alumno" text="%headerAlumno" GridPane.columnIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="22.0" />
                </font>
+               <graphic>
+                  <FontIcon iconLiteral="fas-graduation-cap" />
+               </graphic>
             </Label>
-            <TextField fx:id="txtFieldAlumno" GridPane.rowIndex="1" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
+            <TextField fx:id="txtFieldAlumno" styleClass="txtField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2">
                <children>
-                  <Button fx:id="btnCrearAlumno" mnemonicParsing="false" onAction="#crearAlumnoBtn" text="Crear" />
-                  <Button fx:id="btnEditarAlumno" mnemonicParsing="false" onAction="#editarAlumnoBtn" text="Editar" />
-                  <Button fx:id="btnBorrarAlumno" mnemonicParsing="false" onAction="#borrarAlumnoBtn" text="Borrar" />
+                  <Button fx:id="btnCrearAlumno" mnemonicParsing="false" onAction="#crearAlumnoBtn" styleClass="botonNormal" text="%btnCrear" />
+                  <Button fx:id="btnEditarAlumno" mnemonicParsing="false" onAction="#editarAlumnoBtn" styleClass="botonNormal" text="%btnEditar" />
+                  <Button fx:id="btnBorrarAlumno" mnemonicParsing="false" onAction="#borrarAlumnoBtn" styleClass="botonNormal" text="%btnBorrar" />
                </children>
             </HBox>
-            <ListView fx:id="lstAlumno" onMouseClicked="#seleccionarFilaLst" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <ListView fx:id="lstAlumno" onMouseClicked="#seleccionarFilaLst" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <contextMenu>
                   <ContextMenu>
                      <items>
-                        <MenuItem fx:id="menuCrearAlumno" mnemonicParsing="false" onAction="#crearAlumno" text="Crear" />
-                        <MenuItem fx:id="menuEditarAlumno" mnemonicParsing="false" onAction="#editarAlumno" text="Editar" />
-                        <MenuItem fx:id="menuBorrarAlumno" mnemonicParsing="false" onAction="#borrarAlumno" text="Borrar" />
+                        <MenuItem fx:id="menuCrearAlumno" mnemonicParsing="false" onAction="#crearAlumno" text="%btnCrear" />
+                        <MenuItem fx:id="menuEditarAlumno" mnemonicParsing="false" onAction="#editarAlumno" text="%btnEditar" />
+                        <MenuItem fx:id="menuBorrarAlumno" mnemonicParsing="false" onAction="#borrarAlumno" text="%btnBorrar" />
                      </items>
                   </ContextMenu>
                </contextMenu>
@@ -84,30 +89,33 @@
                <font>
                   <Font size="22.0" />
                </font>
+               <graphic>
+                  <FontIcon iconLiteral="fas-book" />
+               </graphic>
             </Label>
-            <TextField fx:id="txtFieldLibros" GridPane.rowIndex="1" />
+            <TextField fx:id="txtFieldLibros" styleClass="txtField" GridPane.rowIndex="1" />
             <TableView fx:id="tblLibro" onMouseClicked="#seleccionarFilaTbl" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.vgrow="SOMETIMES">
               <columns>
-                <TableColumn fx:id="colCodigoLibro" prefWidth="77.0" text="Codigo" />
-                <TableColumn fx:id="colTitulo" prefWidth="228.0" text="Titulo" />
-                  <TableColumn fx:id="colAutorLibro" prefWidth="141.0" text="Autor" />
-                  <TableColumn fx:id="colEstadoLibro" prefWidth="108.0" text="Estado" />
+                <TableColumn fx:id="colCodigoLibro" prefWidth="77.0" text="%codigo" />
+                <TableColumn fx:id="colTitulo" prefWidth="228.0" text="%titulo" />
+                  <TableColumn fx:id="colAutorLibro" prefWidth="141.0" text="%autor" />
+                  <TableColumn fx:id="colEstadoLibro" prefWidth="108.0" text="%estado" />
               </columns>
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem fx:id="menuCrearLibro" mnemonicParsing="false" onAction="#crearLibro" text="Crear" />
-                        <MenuItem fx:id="menuEditarLibro" mnemonicParsing="false" onAction="#editarLibro" text="Editar" />
-                        <MenuItem fx:id="menuBorrarLibro" mnemonicParsing="false" onAction="#borrarLibro" text="Dar de Baja" />
+                      <MenuItem fx:id="menuCrearLibro" mnemonicParsing="false" onAction="#crearLibro" text="%btnCrear" />
+                        <MenuItem fx:id="menuEditarLibro" mnemonicParsing="false" onAction="#editarLibro" text="%btnEditar" />
+                        <MenuItem fx:id="menuBorrarLibro" mnemonicParsing="false" onAction="#borrarLibro" text="%btnBaja" />
                     </items>
                   </ContextMenu>
                </contextMenu>
             </TableView>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                <children>
-                  <Button fx:id="btnCrearLibro" mnemonicParsing="false" onAction="#crearLibroBtn" text="Crear" />
-                  <Button fx:id="btnEditarLibro" mnemonicParsing="false" onAction="#editarLibroBtn" text="Editar" />
-                  <Button fx:id="btnBorrarLibro" mnemonicParsing="false" onAction="#borrarLibroBtn" text="Dar de Baja" />
+                  <Button fx:id="btnCrearLibro" mnemonicParsing="false" onAction="#crearLibroBtn" styleClass="botonNormal" text="%btnCrear" />
+                  <Button fx:id="btnEditarLibro" mnemonicParsing="false" onAction="#editarLibroBtn" styleClass="botonNormal" text="%btnEditar" />
+                  <Button fx:id="btnBorrarLibro" mnemonicParsing="false" onAction="#borrarLibroBtn" styleClass="botonNormal" text="%btnBaja" />
                </children>
             </HBox>
          </children>
@@ -115,21 +123,24 @@
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </GridPane.margin>
       </GridPane>
-      <Button fx:id="btnPrestar" defaultButton="true" mnemonicParsing="false" onAction="#realizarPrestamo" prefHeight="39.0" prefWidth="233.0" text="Realizar Prestamo" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+      <Button fx:id="btnPrestar" defaultButton="true" mnemonicParsing="false" onAction="#realizarPrestamo" prefHeight="39.0" prefWidth="233.0" styleClass="botonConfirmar" text="Realizar Prestamo" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <font>
             <Font size="19.0" />
          </font>
+         <graphic>
+            <FontIcon iconLiteral="fas-handshake" />
+         </graphic>
       </Button>
-      <MenuBar GridPane.columnSpan="2">
+      <MenuBar id="menuBar" GridPane.columnSpan="2">
         <menus>
-          <Menu mnemonicParsing="false" text="Prestamos">
+          <Menu mnemonicParsing="false" text="%menuPrestamos">
             <items>
-              <MenuItem fx:id="menuGestionarPrestamo" mnemonicParsing="false" onAction="#gestionarPrestamo" text="Gestionar" />
+              <MenuItem fx:id="menuGestionarPrestamo" mnemonicParsing="false" onAction="#gestionarPrestamo" text="%gestionar" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Histórico de Prestamos">
+          <Menu mnemonicParsing="false" text="%menuHistorico">
             <items>
-              <MenuItem fx:id="menuGestionarHistorico" mnemonicParsing="false" onAction="#gestionarHistorico" text="Gestionar" />
+              <MenuItem fx:id="menuGestionarHistorico" mnemonicParsing="false" onAction="#gestionarHistorico" text="%gestionar" />
             </items>
           </Menu>
         </menus>

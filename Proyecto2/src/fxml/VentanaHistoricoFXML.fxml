@@ -10,16 +10,20 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<GridPane prefHeight="543.0" prefWidth="797.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.VentanaHistoricoFXMLController">
+<GridPane id="GridPane" prefHeight="543.0" prefWidth="797.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.VentanaHistoricoFXMLController">
    <children>
-      <Label text="Historico de Prestamos">
+      <Label text="%menuHistorico">
          <font>
             <Font size="22.0" />
          </font>
          <GridPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </GridPane.margin>
+         <graphic>
+            <FontIcon iconLiteral="fas-inbox" />
+         </graphic>
       </Label>
       <GridPane GridPane.columnSpan="2" GridPane.rowIndex="1">
         <columnConstraints>
@@ -32,32 +36,32 @@
           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Libro:">
+            <Label text="%prestamosLibros">
                <GridPane.margin>
                   <Insets left="15.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Alumno:" GridPane.rowIndex="1">
+            <Label text="%prestamosAlumnos" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="15.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="txtFiltro" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <TextField fx:id="txtFiltro" styleClass="txtField" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets left="15.0" right="15.0" />
                </GridPane.margin>
             </TextField>
-            <ComboBox fx:id="cmbBoxLibro" onAction="#filtrarLibro" promptText="Selecciona un Libro" GridPane.columnIndex="1" />
-            <ComboBox fx:id="cmbBoxAlumno" onAction="#filtrarAlumno" promptText="Selecciona un Alumno" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cmbBoxLibro" onAction="#filtrarLibro" promptText="%seleccionaLibro" styleClass="botonNormal" GridPane.columnIndex="1" />
+            <ComboBox fx:id="cmbBoxAlumno" onAction="#filtrarAlumno" promptText="%seleccionaAlumno" styleClass="botonNormal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <TableView fx:id="tblHistorico" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
         <columns>
-          <TableColumn fx:id="colId" prefWidth="110.0" text="ID Prestamo" />
-          <TableColumn fx:id="colDni" prefWidth="130.0" text="DNI" />
-            <TableColumn fx:id="colLibro" prefWidth="121.0" text="Libro" />
-            <TableColumn fx:id="colFechaPrestamo" maxWidth="193.0" prefWidth="227.0" text="Fecha Prestamo" />
-            <TableColumn fx:id="colFechaDev" prefWidth="227.0" text="Fecha devolucion" />
+          <TableColumn fx:id="colId" prefWidth="110.0" text="%id" />
+          <TableColumn fx:id="colDni" prefWidth="130.0" text="%dni" />
+            <TableColumn fx:id="colLibro" prefWidth="121.0" text="%libro" />
+            <TableColumn fx:id="colFechaPrestamo" maxWidth="193.0" prefWidth="227.0" text="%fechaPr" />
+            <TableColumn fx:id="colFechaDev" prefWidth="227.0" text="%fechaDev" />
         </columns>
          <GridPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

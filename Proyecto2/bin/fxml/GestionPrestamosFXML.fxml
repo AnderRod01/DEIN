@@ -8,24 +8,24 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane prefHeight="178.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GestionPrestamosFXMLController">
+<GridPane id="GridPane" prefHeight="178.0" prefWidth="418.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GestionPrestamosFXMLController">
    <children>
-      <ComboBox fx:id="cmbBoxLibro" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES">
+      <ComboBox fx:id="cmbBoxLibro" promptText="%seleccionaLibro" styleClass="botonNormal" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES">
          <GridPane.margin>
             <Insets left="15.0" right="15.0" />
          </GridPane.margin>
       </ComboBox>
-      <ComboBox fx:id="cmbBoxAlumno" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1">
+      <ComboBox fx:id="cmbBoxAlumno" promptText="%seleccionaAlumno" styleClass="botonNormal" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="15.0" right="15.0" />
          </GridPane.margin>
       </ComboBox>
-      <Label text="Libro:" GridPane.halignment="RIGHT">
+      <Label text="%prestamosLibros" GridPane.halignment="RIGHT">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Alumno:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+      <Label text="%prestamosAlumnos" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
@@ -39,8 +39,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btnCancelar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <Button fx:id="btnAceptar" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#aceptar" text="Aceptar" GridPane.halignment="CENTER" />
+            <Button fx:id="btnCancelar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelar" styleClass="botonNormal" text="%btnCancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Button fx:id="btnAceptar" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#aceptar" styleClass="botonConfirmar" text="%btnAceptar" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
    </children>

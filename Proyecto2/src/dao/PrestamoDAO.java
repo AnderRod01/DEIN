@@ -79,7 +79,38 @@ public class PrestamoDAO {
 		ps.executeUpdate();
 	}
 	
+	public boolean existeAlumno (Alumno a){
+		PreparedStatement ps;
 	
+		
+		try {
+			ps = cn.getConexion().prepareStatement("select id_prestamo, dni_alumno, codigo_libro, fecha_prestamo from Prestamo where dni_alumno = ?");
+			ps.setString(1, a.getDni());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			return true;
+		}
+		return false;
+	}
+	public boolean existeLibro (Libro l){
+		PreparedStatement ps;
+
+		
+		try {
+			ps = cn.getConexion().prepareStatement("select id_prestamo, dni_alumno, codigo_libro, fecha_prestamo from Prestamo where codigo_libro = ?");
+			ps.setInt(1, l.getCodigo());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			return true;
+		}
+		return false;
+	}
 	
 	
 }

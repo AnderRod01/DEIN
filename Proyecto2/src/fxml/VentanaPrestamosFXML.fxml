@@ -11,16 +11,20 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<GridPane prefHeight="472.0" prefWidth="554.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.VentanaPrestamosFXMLController">
+<GridPane id="GridPane" prefHeight="472.0" prefWidth="554.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.VentanaPrestamosFXMLController">
    <children>
-      <Label text="Prestamos" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+      <Label text="%menuPrestamos" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </GridPane.margin>
          <font>
             <Font size="21.0" />
          </font>
+         <graphic>
+            <FontIcon iconLiteral="fas-pager" />
+         </graphic>
       </Label>
       <ListView fx:id="lstPrestamos" onMouseClicked="#seleccionarFila" prefHeight="269.0" prefWidth="335.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
          <GridPane.margin>
@@ -29,13 +33,13 @@
          <contextMenu>
             <ContextMenu>
               <items>
-             	 <MenuItem fx:id="mnuCrear" mnemonicParsing="false" onAction="#crearPrestamoMnu" text="Crear" />
-                 <MenuItem fx:id="mnuDevolver" mnemonicParsing="false" onAction="#devolverPrestamoMnu" text="Devolver" />
+             	 <MenuItem fx:id="mnuCrear" mnemonicParsing="false" onAction="#crearPrestamoMnu" text="%btnCrear" />
+                 <MenuItem fx:id="mnuDevolver" mnemonicParsing="false" onAction="#devolverPrestamoMnu" text="%btnDevolver" />
               </items>
             </ContextMenu>
          </contextMenu>
       </ListView>
-      <ComboBox fx:id="cmbBoxAlumnos" onAction="#filtrarPorAlumno" prefHeight="24.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+      <ComboBox fx:id="cmbBoxAlumnos" onAction="#filtrarPorAlumno" prefHeight="24.0" promptText="%seleccionaAlumno" styleClass="botonNormal" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </GridPane.margin>
@@ -49,11 +53,11 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#crearPrestamoBtn" text="Crear" GridPane.halignment="CENTER" />
-            <Button fx:id="btnDevolver" mnemonicParsing="false" onAction="#devolverPrestamoBtn" text="Devolver" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Button fx:id="btnCrear" defaultButton="true" mnemonicParsing="false" onAction="#crearPrestamoBtn" styleClass="botonConfirmar" text="%btnCrear" GridPane.halignment="CENTER" />
+            <Button fx:id="btnDevolver" mnemonicParsing="false" onAction="#devolverPrestamoBtn" styleClass="botonNormal" text="%btnDevolver" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
-      <Label text="Alumnos:" GridPane.rowIndex="1">
+      <Label text="%prestamosAlumnos" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </GridPane.margin>
@@ -66,7 +70,7 @@
       <RowConstraints maxHeight="58.0" minHeight="0.0" prefHeight="46.0" vgrow="NEVER" />
    </rowConstraints>
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="42.0" prefWidth="155.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="567.0" minWidth="10.0" prefWidth="399.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="42.0" prefWidth="177.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="567.0" minWidth="10.0" prefWidth="377.0" />
    </columnConstraints>
 </GridPane>

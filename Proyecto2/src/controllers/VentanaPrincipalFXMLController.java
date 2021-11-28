@@ -15,8 +15,10 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
+import config.Propiedades;
 import dao.AlumnoDAO;
 import dao.LibroDAO;
 import dao.PrestamoDAO;
@@ -107,7 +109,9 @@ public class VentanaPrincipalFXMLController implements Initializable{
 	// Event Listener on Button[#btnCrearAlumno].onAction
 	@FXML
 	public void crearAlumnoBtn(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionAlumnoFXML.fxml"));
+		Locale locale = new Locale (Propiedades.getValor("language"),Propiedades.getValor("region"));
+		ResourceBundle bundle = ResourceBundle.getBundle("config/messages", locale);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionAlumnoFXML.fxml"), bundle);
 		Parent root;
 		try {
 			root = loader.load();
@@ -118,7 +122,7 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			Stage myStage =(Stage) this.btnCrearLibro.getScene().getWindow();
 			stage.initOwner(myStage);
 			stage.setScene(scene);
-			stage.setTitle("Agregar Libro");
+			stage.setTitle("Agregar Alumno");
 			stage.showAndWait();
 			
 			a = controller.getAlumno();
@@ -133,12 +137,45 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			e.printStackTrace();
 		}
 	}
-	
+	// Event Listener on MenuItem[#menuCrearAlumno].onAction
+	@FXML
+	public void crearAlumno(ActionEvent event) {
+		Locale locale = new Locale (Propiedades.getValor("language"),Propiedades.getValor("region"));
+		ResourceBundle bundle = ResourceBundle.getBundle("config/messages", locale);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionAlumnoFXML.fxml"), bundle);
+		Parent root;
+		try {
+			root = loader.load();
+			GestionAlumnoFXMLController controller = loader.getController();
+			Scene scene = new Scene(root);
+			Stage stage = new Stage();
+			stage.initModality(Modality.APPLICATION_MODAL);
+			Stage myStage =(Stage) this.btnCrearLibro.getScene().getWindow();
+			stage.initOwner(myStage);
+			stage.setScene(scene);
+			stage.setTitle("Agregar Alumno");
+			stage.showAndWait();
+			
+			a = controller.getAlumno();
+			
+			if (a!=null) {
+				dataAlumno.add(a);
+			}
+			
+			
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	// Event Listener on Button[#btnEditarAlumno].onAction
 	@FXML
 	public void editarAlumnoBtn(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionAlumnoFXML.fxml"));
+		Locale locale = new Locale (Propiedades.getValor("language"),Propiedades.getValor("region"));
+		ResourceBundle bundle = ResourceBundle.getBundle("config/messages", locale);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionAlumnoFXML.fxml"), bundle);
 		Parent root;
 		try {
 			root = loader.load();
@@ -150,7 +187,7 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			Stage myStage =(Stage) this.btnCrearLibro.getScene().getWindow();
 			stage.initOwner(myStage);
 			stage.setScene(scene);
-			stage.setTitle("Actualizar Libro");
+			stage.setTitle("Actualizar Alumno");
 			stage.showAndWait();
 			
 			
@@ -166,15 +203,60 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			e.printStackTrace();
 		}
 	}
+	// Event Listener on MenuItem[#menuEditarAlumno].onAction
+	@FXML
+	public void editarAlumno(ActionEvent event) {
+		Locale locale = new Locale (Propiedades.getValor("language"),Propiedades.getValor("region"));
+		ResourceBundle bundle = ResourceBundle.getBundle("config/messages", locale);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionAlumnoFXML.fxml"), bundle);
+		Parent root;
+		try {
+			root = loader.load();
+			GestionAlumnoFXMLController controller = loader.getController();
+			controller.setAlumno(a);
+			Scene scene = new Scene(root);
+			Stage stage = new Stage();
+			stage.initModality(Modality.APPLICATION_MODAL);
+			Stage myStage =(Stage) this.btnCrearLibro.getScene().getWindow();
+			stage.initOwner(myStage);
+			stage.setScene(scene);
+			stage.setTitle("Actualizar Alumno");
+			stage.showAndWait();
+			
+			
+			a = controller.getAlumno();
+			if (a!=null) {
+				dataAlumno.set(iSeleccionadoAlumno, a);
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	// Event Listener on Button[#btnBorrarAlumno].onAction
 	@FXML
 	public void borrarAlumnoBtn(ActionEvent event) {
 		Alumno a = lstAlumno.getSelectionModel().getSelectedItem();
-		dataLibro.remove(iSeleccionadoAlumno);
+		
 		
 		try {
-			cAlumno.deleteAlumno(a);
-			dataAlumno.remove(iSeleccionadoAlumno);
+			if (!cPrestamo.existeAlumno(a)) {
+				cAlumno.deleteAlumno(a);
+				dataAlumno.remove(iSeleccionadoAlumno);
+			}
+			else {
+				Alert alert= new Alert(Alert.AlertType.ERROR);
+				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
+				alert.setHeaderText(null);
+				alert.setTitle("ERROR");
+				alert.setContentText("No se puede borrar un alumno con un prestamo");
+				alert.showAndWait();
+			}
+			
+			
+			
 		} catch (SQLException e) {
 			Alert alert= new Alert(Alert.AlertType.ERROR);
 			alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
@@ -191,6 +273,40 @@ public class VentanaPrincipalFXMLController implements Initializable{
 		menuEditarAlumno.setDisable(true);
 		menuBorrarAlumno.setDisable(true);
 	}
+	// Event Listener on MenuItem[#menuBorrarAlumno].onAction
+		@FXML
+		public void borrarAlumno(ActionEvent event) {
+			Alumno a = lstAlumno.getSelectionModel().getSelectedItem();
+			
+			
+			try {
+				if (!cPrestamo.existeAlumno(a)) {
+					cAlumno.deleteAlumno(a);
+					dataAlumno.remove(iSeleccionadoAlumno);
+				}
+				else {
+					Alert alert= new Alert(Alert.AlertType.ERROR);
+					alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
+					alert.setHeaderText(null);
+					alert.setTitle("ERROR");
+					alert.setContentText("No se puede borrar un alumno con un prestamo");
+					alert.showAndWait();
+				}
+			} catch (SQLException e) {
+				Alert alert= new Alert(Alert.AlertType.ERROR);
+				alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
+				alert.setHeaderText(null);
+				alert.setTitle("ERROR");
+				alert.setContentText("No se ha podido borrar el alumno");
+				alert.showAndWait();
+			}
+			
+			iSeleccionadoAlumno = -1;
+			btnEditarAlumno.setDisable(true);
+			btnBorrarAlumno.setDisable(true);
+			menuEditarAlumno.setDisable(true);
+			menuBorrarAlumno.setDisable(true);
+		}
 	// Event Listener on ListView[#lstAlumno].onMouseClicked
 	@FXML
 	public void seleccionarFilaLst(MouseEvent event) {
@@ -210,91 +326,10 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			}
 		}
 	}
-	// Event Listener on MenuItem[#menuCrearAlumno].onAction
-	@FXML
-	public void crearAlumno(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionAlumnoFXML.fxml"));
-		Parent root;
-		try {
-			root = loader.load();
-			GestionAlumnoFXMLController controller = loader.getController();
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.initModality(Modality.APPLICATION_MODAL);
-			Stage myStage =(Stage) this.btnCrearLibro.getScene().getWindow();
-			stage.initOwner(myStage);
-			stage.setScene(scene);
-			stage.setTitle("Agregar Libro");
-			stage.showAndWait();
-			
-			a = controller.getAlumno();
-			
-			if (a!=null) {
-				dataAlumno.add(a);
-			}
-			
-			
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
-	// Event Listener on MenuItem[#menuEditarAlumno].onAction
-	@FXML
-	public void editarAlumno(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionAlumnoFXML.fxml"));
-		Parent root;
-		try {
-			root = loader.load();
-			GestionAlumnoFXMLController controller = loader.getController();
-			controller.setAlumno(a);
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.initModality(Modality.APPLICATION_MODAL);
-			Stage myStage =(Stage) this.btnCrearLibro.getScene().getWindow();
-			stage.initOwner(myStage);
-			stage.setScene(scene);
-			stage.setTitle("Actualizar Libro");
-			stage.showAndWait();
-			
-			
-			a = controller.getAlumno();
-			if (a!=null) {
-				dataAlumno.set(iSeleccionadoAlumno, a);
-			}
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	// Event Listener on MenuItem[#menuBorrarAlumno].onAction
-	@FXML
-	public void borrarAlumno(ActionEvent event) {
-		Alumno a = lstAlumno.getSelectionModel().getSelectedItem();
-		dataLibro.remove(iSeleccionadoAlumno);
-		
-		try {
-			cAlumno.deleteAlumno(a);
-			dataAlumno.remove(iSeleccionadoAlumno);
-		} catch (SQLException e) {
-			Alert alert= new Alert(Alert.AlertType.ERROR);
-			alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
-			alert.setHeaderText(null);
-			alert.setTitle("ERROR");
-			alert.setContentText("No se ha podido borrar el alumno");
-			alert.showAndWait();
-		}
-		
-		iSeleccionadoAlumno = -1;
-		btnEditarAlumno.setDisable(true);
-		btnBorrarAlumno.setDisable(true);
-		menuEditarAlumno.setDisable(true);
-		menuBorrarAlumno.setDisable(true);
-	}
+	
+	
+	
 	// Event Listener on TableView[#tblLibro].onMouseClicked
 	@FXML
 	public void seleccionarFilaTbl(MouseEvent event) {
@@ -317,7 +352,9 @@ public class VentanaPrincipalFXMLController implements Initializable{
 	// Event Listener on MenuItem[#menuCrearLibro].onAction
 	@FXML
 	public void crearLibro(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionLibroFXML.fxml"));
+		Locale locale = new Locale (Propiedades.getValor("language"),Propiedades.getValor("region"));
+		ResourceBundle bundle = ResourceBundle.getBundle("config/messages", locale);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionLibroFXML.fxml"), bundle);
 		Parent root;
 		try {
 			root = loader.load();
@@ -344,11 +381,46 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			e.printStackTrace();
 		}
 	}
+	// Event Listener on Button[#btnCrearLibro].onAction
+	@FXML
+	public void crearLibroBtn(ActionEvent event) {
+		Locale locale = new Locale (Propiedades.getValor("language"),Propiedades.getValor("region"));
+		ResourceBundle bundle = ResourceBundle.getBundle("config/messages", locale);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionLibroFXML.fxml"), bundle);
+		Parent root;
+		try {
+			root = loader.load();
+			GestionLibroFXMLController controller = loader.getController();
+			Scene scene = new Scene(root);
+			Stage stage = new Stage();
+			stage.initModality(Modality.APPLICATION_MODAL);
+			Stage myStage =(Stage) this.btnCrearLibro.getScene().getWindow();
+			stage.initOwner(myStage);
+			stage.setScene(scene);
+			stage.setTitle("Agregar Libro");
+			stage.showAndWait();
+		
+			l = controller.getLibro();
+
+			if (l!=null) {
+				dataLibro.add(l);
+			}
+			
+
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 		
 	// Event Listener on MenuItem[#menuEditarLibro].onAction
 	@FXML
 	public void editarLibro(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionLibroFXML.fxml"));
+		Locale locale = new Locale (Propiedades.getValor("language"),Propiedades.getValor("region"));
+		ResourceBundle bundle = ResourceBundle.getBundle("config/messages", locale);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionLibroFXML.fxml"), bundle);
 		Parent root;
 		try {
 			root = loader.load();
@@ -379,56 +451,12 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			e.printStackTrace();
 		}
 	}
-	// Event Listener on MenuItem[#menuBorrarLibro].onAction
-	@FXML
-	public void borrarLibro(ActionEvent event) {
-		Libro lib = tblLibro.getSelectionModel().getSelectedItem();
-		dataLibro.remove(iSeleccionadoLibro);
-		
-		cLibro.cambiarBaja(lib);
-		
-		iSeleccionadoLibro = -1;
-		btnEditarLibro.setDisable(true);
-		btnBorrarLibro.setDisable(true);
-		
-		menuEditarLibro.setDisable(true);
-		menuBorrarLibro.setDisable(true);
-	}
-	// Event Listener on Button[#btnCrearLibro].onAction
-	@FXML
-	public void crearLibroBtn(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionLibroFXML.fxml"));
-		Parent root;
-		try {
-			root = loader.load();
-			GestionLibroFXMLController controller = loader.getController();
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.initModality(Modality.APPLICATION_MODAL);
-			Stage myStage =(Stage) this.btnCrearLibro.getScene().getWindow();
-			stage.initOwner(myStage);
-			stage.setScene(scene);
-			stage.setTitle("Agregar Libro");
-			stage.showAndWait();
-		
-			l = controller.getLibro();
-
-			if (l!=null) {
-				dataLibro.add(l);
-			}
-			
-
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	// Event Listener on Button[#btnEditarLibro].onAction
 	@FXML
 	public void editarLibroBtn(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionLibroFXML.fxml"));
+		Locale locale = new Locale (Propiedades.getValor("language"),Propiedades.getValor("region"));
+		ResourceBundle bundle = ResourceBundle.getBundle("config/messages", locale);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GestionLibroFXML.fxml"), bundle);
 		Parent root;
 		try {
 			root = loader.load();
@@ -461,17 +489,55 @@ public class VentanaPrincipalFXMLController implements Initializable{
 			e.printStackTrace();
 		}
 	}
+	// Event Listener on MenuItem[#menuBorrarLibro].onAction
+	@FXML
+	public void borrarLibro(ActionEvent event) {
+		Libro lib = tblLibro.getSelectionModel().getSelectedItem();
+		
+		if (!cPrestamo.existeLibro(lib)) {
+			dataLibro.remove(iSeleccionadoLibro);
+			
+			cLibro.cambiarBaja(lib);
+			iSeleccionadoLibro = -1;
+			btnEditarLibro.setDisable(true);
+			btnBorrarLibro.setDisable(true);
+			
+			menuEditarLibro.setDisable(true);
+			menuBorrarLibro.setDisable(true);
+		}else {
+			Alert alert= new Alert(Alert.AlertType.ERROR);
+			alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
+			alert.setHeaderText(null);
+			alert.setTitle("ERROR");
+			alert.setContentText("No se puede dar de baja un libro prestado");
+			alert.showAndWait();
+		}
+	}
+	
+	
 	// Event Listener on Button[#btnBorrarLibro].onAction
 	@FXML
 	public void borrarLibroBtn(ActionEvent event) {
-		Libro lib = tblLibro.getSelectionModel().getSelectedItem();
-		dataLibro.remove(iSeleccionadoLibro);
+Libro lib = tblLibro.getSelectionModel().getSelectedItem();
 		
-		cLibro.cambiarBaja(lib);
-		
-		iSeleccionadoLibro = -1;
-		btnEditarLibro.setDisable(true);
-		btnBorrarLibro.setDisable(true);
+		if (!cPrestamo.existeLibro(lib)) {
+			dataLibro.remove(iSeleccionadoLibro);
+			
+			cLibro.cambiarBaja(lib);
+			iSeleccionadoLibro = -1;
+			btnEditarLibro.setDisable(true);
+			btnBorrarLibro.setDisable(true);
+			
+			menuEditarLibro.setDisable(true);
+			menuBorrarLibro.setDisable(true);
+		}else {
+			Alert alert= new Alert(Alert.AlertType.ERROR);
+			alert.initOwner(this.btnBorrarAlumno.getScene().getWindow());
+			alert.setHeaderText(null);
+			alert.setTitle("ERROR");
+			alert.setContentText("No se puede dar de baja un libro prestado");
+			alert.showAndWait();
+		}
 	}
 	
 	// Event Listener on Button[#btnPrestar].onAction
@@ -508,7 +574,9 @@ public class VentanaPrincipalFXMLController implements Initializable{
 	// Event Listener on MenuItem[#menuGestionarPrestamo].onAction
 	@FXML
 	public void gestionarPrestamo(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/VentanaPrestamosFXML.fxml"));
+		Locale locale = new Locale (Propiedades.getValor("language"),Propiedades.getValor("region"));
+		ResourceBundle bundle = ResourceBundle.getBundle("config/messages", locale);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/VentanaPrestamosFXML.fxml"), bundle);
 		Parent root;
 		try {
 			root = loader.load();
@@ -533,7 +601,9 @@ public class VentanaPrincipalFXMLController implements Initializable{
 	// Event Listener on MenuItem[#menuGestionarHistorico].onAction
 	@FXML
 	public void gestionarHistorico(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/VentanaHistoricoFXML.fxml"));
+		Locale locale = new Locale (Propiedades.getValor("language"),Propiedades.getValor("region"));
+		ResourceBundle bundle = ResourceBundle.getBundle("config/messages", locale);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/VentanaHistoricoFXML.fxml"), bundle);
 		Parent root;
 		try {
 			root = loader.load();

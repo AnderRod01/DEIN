@@ -48,44 +48,82 @@ public class GestionLibroFXMLController implements Initializable{
 			String titulo = txtTitulo.getText();
 			String autor = txtAutor.getText();
 			String editorial = txtEditorial.getText();
-			int codigo = Integer.parseInt(txtCodigo.getText());
-			String estado = cmbBoxEstado.getSelectionModel().getSelectedItem();
-			
-			if (l!= null) {
-				int codigoAntiguo = l.getCodigo();
-				l = new Libro (codigo,titulo, autor, editorial, estado,0);
+			try {
+				int codigo = Integer.parseInt(txtCodigo.getText());
+				String estado = cmbBoxEstado.getSelectionModel().getSelectedItem();
 				
-				try {
-					cLibro.updateLibro(l, codigoAntiguo);
-				} catch (SQLException e) {
+				if (codigo < 0 || String.valueOf(codigo).length()< 6) {
 					Alert alert= new Alert(Alert.AlertType.ERROR);
 					alert.initOwner(this.btnCancelar.getScene().getWindow());
 					alert.setHeaderText(null);
 					alert.setTitle("ERROR");
-					alert.setContentText("Ha ocurrido un error en la actualizacion del libro");
+					alert.setContentText("El codigo debe ser numerico y no mas de 6 digitos");
 					alert.showAndWait();
 				}
-				
-			}else {
-				l = new Libro (codigo,titulo, autor, editorial, estado,0);
-				
-				try {
-					cLibro.insertLibro(l);
-				} catch (SQLException e) {
+				else {
+					if (l!= null) {
+						int codigoAntiguo = l.getCodigo();
+						l = new Libro (codigo,titulo, autor, editorial, estado,0);
+						
+						try {
+							cLibro.updateLibro(l, codigoAntiguo);
+							
+							Alert alert = new Alert(Alert.AlertType.INFORMATION);
+							alert.setHeaderText(null);
+							alert.setTitle("Exito");
+							alert.setContentText("Libro Actualizado");
+							alert.showAndWait();
+							
+							Stage myStage =(Stage) this.btnCancelar.getScene().getWindow();
+							myStage.close();
+							
+						} catch (SQLException e) {
+							Alert alert= new Alert(Alert.AlertType.ERROR);
+							alert.initOwner(this.btnCancelar.getScene().getWindow());
+							alert.setHeaderText(null);
+							alert.setTitle("ERROR");
+							alert.setContentText("Ha ocurrido un error en la actualizacion del libro");
+							alert.showAndWait();
+						}
+						
+					}else {
+						l = new Libro (codigo,titulo, autor, editorial, estado,0);
+						
+						try {
+							cLibro.insertLibro(l);
+							
+							Alert alert = new Alert(Alert.AlertType.INFORMATION);
+							alert.setHeaderText(null);
+							alert.setTitle("Exito");
+							alert.setContentText("Libro Creado");
+							alert.showAndWait();
+							
+							Stage myStage =(Stage) this.btnCancelar.getScene().getWindow();
+							myStage.close();
+						} catch (SQLException e) {
+							Alert alert= new Alert(Alert.AlertType.ERROR);
+							alert.initOwner(this.btnCancelar.getScene().getWindow());
+							alert.setHeaderText(null);
+							alert.setTitle("ERROR");
+							alert.setContentText("Ha ocurrido un error en la creacion del libro");
+							alert.showAndWait();
+						}
+					}
+					
+					
+				}
+			}catch (NumberFormatException e) {
 					Alert alert= new Alert(Alert.AlertType.ERROR);
 					alert.initOwner(this.btnCancelar.getScene().getWindow());
 					alert.setHeaderText(null);
 					alert.setTitle("ERROR");
-					alert.setContentText("Ha ocurrido un error en la creacion del libro");
+					alert.setContentText("El codigo debe ser un numero");
 					alert.showAndWait();
-				}
 			}
-			
-			Stage myStage =(Stage) this.btnCancelar.getScene().getWindow();
-			myStage.close();
-		
-		
-	}
+		}
+	
+
+	
 	// Event Listener on Button[#btnCancelar].onAction
 	@FXML
 	public void cancelar(ActionEvent event) {

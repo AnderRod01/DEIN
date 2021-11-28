@@ -9,52 +9,52 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane prefHeight="317.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GestionAlumnoFXMLController">
+<GridPane id="GridPane" prefHeight="317.0" prefWidth="432.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GestionAlumnoFXMLController">
    <children>
-      <Label text="DNI" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+      <Label text="%dni" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Nombre" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+      <Label text="%nombre" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Primer Apellido" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+      <Label text="%ape1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Segundo Apellido" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+      <Label text="%ape2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </Label>
-      <TextField fx:id="txtFieldDni" GridPane.columnIndex="1">
+      <TextField fx:id="txtFieldDni" styleClass="txtField" GridPane.columnIndex="1">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtFieldNombre" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <TextField fx:id="txtFieldNombre" styleClass="txtField" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtFieldApellido1" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <TextField fx:id="txtFieldApellido1" styleClass="txtField" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtFieldApellido2" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <TextField fx:id="txtFieldApellido2" styleClass="txtField" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </TextField>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="35.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
          <children>
-            <Button fx:id="btnAceptar" mnemonicParsing="false" onAction="#aceptar" text="Aceptar" />
-            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+            <Button fx:id="btnAceptar" mnemonicParsing="false" onAction="#aceptar" styleClass="botonConfirmar" text="%btnAceptar" />
+            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#cancelar" styleClass="botonNormal" text="%btnCancelar" />
          </children>
       </HBox>
    </children>

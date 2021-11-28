@@ -122,5 +122,20 @@ public class LibroDAO {
 		}
 	}
 	
+	public void cambiarEstado (int cod, String estado) {
+		PreparedStatement ps;
+		
+		try {
+			ps = cn.getConexion().prepareStatement("update Libro set Estado = ? where codigo = ?");
+			ps.setString(1, estado);
+			ps.setInt(2, cod);
+			
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 }
